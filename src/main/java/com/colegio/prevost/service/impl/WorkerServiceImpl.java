@@ -4,7 +4,10 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import com.colegio.prevost.dto.WorkerDTO;
+import com.colegio.prevost.model.User;
 import com.colegio.prevost.model.Worker;
+import com.colegio.prevost.repository.UserRepository;
 import com.colegio.prevost.repository.WorkerRepository;
 import com.colegio.prevost.service.WorkerService;
 
@@ -14,44 +17,48 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class WorkerServiceImpl implements WorkerService {
 
-    private final WorkerRepository repository;
+    private final WorkerRepository workerRepository;
+    private final UserRepository userRepository;
 
     @Override
     public Worker getWorkerById(Long id) {
-        return repository.findById(id).orElse(null);
+        return workerRepository.findById(id).orElse(null);
     }
 
     @Override
     public List<Worker> getAllWorkers() {
-        return repository.findAll();
+        return workerRepository.findAll();
     }
 
     @Override
     public Worker createWorker(Worker worker) {
-        return repository.save(worker);
+        return workerRepository.save(worker);
     }
 
     @Override
-    public Worker updateWorker(Long id, Worker worker) {
-        Worker existingWorker = repository.findById(id).orElse(null);
+    public WorkerDTO updateWorker(Long id, Worker worker, User user) {
+        User existingUser = userRepository.findById(id).orElse(null);
+        Worker existingWorker = workerRepository.findById(id).orElse(null);
+
+        if (existingUser != null) {
+            existingUser.setCode(user.getCode());
+            existingUser.setNames(user.getNames());
+            existingUser.setSurNames(user.getSurNames());
+            existingUser.setEmail(user.getEmail());
+            userRepository.save(existingUser);
+        }
         if (existingWorker != null) {
-//            existingWorker.setCode(worker.getCode());
-//            existingWorker.setNames(worker.getNames());
-//            existingWorker.setSurNames(worker.getSurNames());
-//            existingWorker.setEmail(worker.getEmail());
-//            existingWorker.setPassword(worker.getPassword());
-//            existingWorker.setRole(worker.getRole());
-//            existingWorker.setMobileNumber(worker.getMobileNumber());
+            existingWorker.setMobileNumber(worker.getMobileNumber());
             existingWorker.setHiringDate(worker.getHiringDate());
             existingWorker.setTerminationDate(worker.getTerminationDate());
-            return repository.save(existingWorker);
+            workerRepository.save(existingWorker);
         }
-        return null;
+        return new WorkerDTO().getWorkerDTO(worker, user);
     }
 
     @Override
     public void deleteWorker(Long id) {
-        repository.deleteById(id);
+        workerRepository.deleteById(id);
     }
 
 }
