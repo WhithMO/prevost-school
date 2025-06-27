@@ -30,7 +30,7 @@ public class ParentStudent {
 
     @ManyToOne
     @JoinColumn(name = "parent_id")
-    private User parent;
+    private Parent parent;
 
     @ManyToOne
     @JoinColumn(name = "student_id")

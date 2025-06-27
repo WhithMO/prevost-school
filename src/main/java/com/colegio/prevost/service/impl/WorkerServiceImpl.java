@@ -35,13 +35,13 @@ public class WorkerServiceImpl implements WorkerService {
     public Worker updateWorker(Long id, Worker worker) {
         Worker existingWorker = repository.findById(id).orElse(null);
         if (existingWorker != null) {
-            existingWorker.setCode(worker.getCode());
-            existingWorker.setNames(worker.getNames());
-            existingWorker.setSurNames(worker.getSurNames());
-            existingWorker.setEmail(worker.getEmail());
-            existingWorker.setPassword(worker.getPassword());
-            existingWorker.setRole(worker.getRole());
-            existingWorker.setMobileNumber(worker.getMobileNumber());
+//            existingWorker.setCode(worker.getCode());
+//            existingWorker.setNames(worker.getNames());
+//            existingWorker.setSurNames(worker.getSurNames());
+//            existingWorker.setEmail(worker.getEmail());
+//            existingWorker.setPassword(worker.getPassword());
+//            existingWorker.setRole(worker.getRole());
+//            existingWorker.setMobileNumber(worker.getMobileNumber());
             existingWorker.setHiringDate(worker.getHiringDate());
             existingWorker.setTerminationDate(worker.getTerminationDate());
             return repository.save(existingWorker);

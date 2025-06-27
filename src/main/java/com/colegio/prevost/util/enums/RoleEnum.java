@@ -1,8 +1,11 @@
 package com.colegio.prevost.util.enums;
 
 public enum RoleEnum {
-    ADMIN,
-    PROFESSOR,
+    PENDING_STUDENT,
+    PENDING_TEACHER,
+    PENDING_GUARDIAN,
+    STUDENT,
+    TEACHER,
     PARENT,
-    STUDENT
+    ADMIN
 }

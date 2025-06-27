@@ -1,8 +1,5 @@
 package com.colegio.prevost.model;
 
-import java.time.LocalDate;
-
-import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
@@ -12,11 +9,10 @@ import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.Data;
 
-
 @Entity
-@Table(name = "worker_profiles")
+@Table(name = "parent_profiles")
 @Data
-public class Worker {
+public class Parent {
 
     @Id
     private Long userId;
@@ -25,12 +21,6 @@ public class Worker {
     @MapsId
     @JoinColumn(name = "user_id")
     private User user;
-
-    @Column(name = "hiring_date")
-    private LocalDate hiringDate;
-
-    @Column(name = "termination_date")
-    private LocalDate terminationDate;
 
     private Integer mobileNumber;
 }
