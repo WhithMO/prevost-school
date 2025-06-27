@@ -1,6 +1,5 @@
 package com.colegio.prevost.dto;
 
-import com.colegio.prevost.model.Worker;
 import com.colegio.prevost.util.enums.GradeEnum;
 
 import lombok.Data;
@@ -12,7 +11,7 @@ public class AnnouncementDTO {
 
     private String description;
 
-    private Worker teacher;
+    private WorkerDTO teacher;
 
     private GradeEnum grade;
 }
