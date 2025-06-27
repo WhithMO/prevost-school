@@ -4,8 +4,11 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import com.colegio.prevost.dto.StudentDTO;
 import com.colegio.prevost.model.Student;
+import com.colegio.prevost.model.User;
 import com.colegio.prevost.repository.StudentRepository;
+import com.colegio.prevost.repository.UserRepository;
 import com.colegio.prevost.service.StudentService;
 
 import lombok.RequiredArgsConstructor;
@@ -14,38 +17,48 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class StudentServiceImpl implements StudentService {
 
-    private final StudentRepository repository;
+    private final StudentRepository studentRepository;
+    private final UserRepository userRepository;
 
     @Override
     public Student getStudentById(Long id) {
-        return repository.findById(id).orElse(null);
+        return studentRepository.findById(id).orElse(null);
     }
 
     @Override
     public List<Student> getAllStudents() {
-        return repository.findAll();
+        return studentRepository.findAll();
     }
 
     @Override
     public Student createStudent(Student student) {
-        return repository.save(student);
+        return studentRepository.save(student);
     }
 
     @Override
-    public Student updateStudent(Long id, Student student) {
-      Student existingStudent = repository.findById(id).orElse(null);
-      if (existingStudent != null) {
-          existingStudent.setGradeEnum(student.getGradeEnum());
-          existingStudent.setAdmissionDate(student.getAdmissionDate());
-          existingStudent.setEgressDate(student.getEgressDate());
-          return repository.save(existingStudent);
-      }
-      return null;
+    public StudentDTO updateStudent(Long id, Student student, User user) {
+        User existingUser = userRepository.findById(id).orElse(null);
+        Student existingStudent = studentRepository.findById(id).orElse(null);
+
+        if (existingUser != null) {
+            existingUser.setCode(user.getCode());
+            existingUser.setNames(user.getNames());
+            existingUser.setSurNames(user.getSurNames());
+            existingUser.setEmail(user.getEmail());
+            userRepository.save(existingUser);
+        }
+        if (existingStudent != null) {
+            existingStudent.setGradeEnum(student.getGradeEnum());
+            existingStudent.setAdmissionDate(student.getAdmissionDate());
+            existingStudent.setEgressDate(student.getEgressDate());
+            studentRepository.save(existingStudent);
+        }
+        return new StudentDTO().getStudentDTO(student, user);
     }
 
     @Override
     public void deleteStudent(Long id) {
-        repository.deleteById(id);
+        studentRepository.deleteById(id);
     }
 
 }
