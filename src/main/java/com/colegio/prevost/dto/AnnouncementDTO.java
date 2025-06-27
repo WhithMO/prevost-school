@@ -1,0 +1,18 @@
+package com.colegio.prevost.dto;
+
+import com.colegio.prevost.model.Worker;
+import com.colegio.prevost.util.enums.GradeEnum;
+
+import lombok.Data;
+
+@Data
+public class AnnouncementDTO {
+
+    private Long id;
+
+    private String description;
+
+    private Worker teacher;
+
+    private GradeEnum grade;
+}

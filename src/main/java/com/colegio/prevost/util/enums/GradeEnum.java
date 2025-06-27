@@ -1,0 +1,16 @@
+package com.colegio.prevost.util.enums;
+
+public enum GradeEnum {
+    KINDERGARTEN,
+    FIRST_GRADE,
+    SECOND_GRADE,
+    THIRD_GRADE,
+    FOURTH_GRADE,
+    FIFTH_GRADE,
+    SIXTH_GRADE,
+    FIRST_SECONDARY_GRADE,
+    SECOND_SECONDARY_GRADE,
+    THIRD_SECONDARY_GRADE,
+    FOURTH_SECONDARY_GRADE,
+    FIFTH_SECONDARY_GRADE,
+}
