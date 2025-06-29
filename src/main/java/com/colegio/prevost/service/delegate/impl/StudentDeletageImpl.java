@@ -1,4 +1,4 @@
-package com.colegio.prevost.service.impl;
+package com.colegio.prevost.service.delegate.impl;
 
 import java.util.List;
 
@@ -9,13 +9,13 @@ import com.colegio.prevost.model.Student;
 import com.colegio.prevost.model.User;
 import com.colegio.prevost.repository.StudentRepository;
 import com.colegio.prevost.repository.UserRepository;
-import com.colegio.prevost.service.StudentService;
+import com.colegio.prevost.service.delegate.StudentDeletage;
 
 import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
-public class StudentServiceImpl implements StudentService {
+public class StudentDeletageImpl implements StudentDeletage {
 
     private final StudentRepository studentRepository;
     private final UserRepository userRepository;

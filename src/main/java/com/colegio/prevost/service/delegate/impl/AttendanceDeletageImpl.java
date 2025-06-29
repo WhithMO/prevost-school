@@ -1,4 +1,4 @@
-package com.colegio.prevost.service.impl;
+package com.colegio.prevost.service.delegate.impl;
 
 import java.util.List;
 
@@ -6,13 +6,13 @@ import org.springframework.stereotype.Service;
 
 import com.colegio.prevost.model.Attendance;
 import com.colegio.prevost.repository.AttendanceRepository;
-import com.colegio.prevost.service.AttendanceService;
+import com.colegio.prevost.service.delegate.AttendanceDeletage;
 
 import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
-public class AttendanceServiceImpl implements AttendanceService {
+public class AttendanceDeletageImpl implements AttendanceDeletage {
 
     private final AttendanceRepository repository;
 

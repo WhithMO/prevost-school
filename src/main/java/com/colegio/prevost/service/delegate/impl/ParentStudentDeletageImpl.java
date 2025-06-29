@@ -1,4 +1,4 @@
-package com.colegio.prevost.service.impl;
+package com.colegio.prevost.service.delegate.impl;
 
 import java.util.List;
 
@@ -6,13 +6,13 @@ import org.springframework.stereotype.Service;
 
 import com.colegio.prevost.model.ParentStudent;
 import com.colegio.prevost.repository.ParentStudentRepository;
-import com.colegio.prevost.service.ParentStudentService;
+import com.colegio.prevost.service.delegate.ParentStudentDeletage;
 
 import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
-public class ParentStudentServiceImpl implements ParentStudentService {
+public class ParentStudentDeletageImpl implements ParentStudentDeletage {
 
     private final ParentStudentRepository repository;
 

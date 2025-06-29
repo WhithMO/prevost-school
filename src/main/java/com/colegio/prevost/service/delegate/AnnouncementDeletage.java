@@ -1,10 +1,10 @@
-package com.colegio.prevost.service;
+package com.colegio.prevost.service.delegate;
 
 import java.util.List;
 
 import com.colegio.prevost.model.Announcement;
 
-public interface AnnouncementService {
+public interface AnnouncementDeletage {
 
     Announcement getAnnouncementById(Long id);
     List<Announcement> getAllAnnouncements();

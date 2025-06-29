@@ -1,10 +1,10 @@
-package com.colegio.prevost.service;
+package com.colegio.prevost.service.delegate;
 
 import java.util.List;
 
 import com.colegio.prevost.model.User;
 
-public interface UserService {
+public interface UserDeletage {
     User getUserById(Long id);
     List<User> getAllUsers();
     User createUser(User user);

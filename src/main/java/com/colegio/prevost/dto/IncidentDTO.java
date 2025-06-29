@@ -1,5 +1,8 @@
 package com.colegio.prevost.dto;
 
+import lombok.Data;
+
+@Data
 public class IncidentDTO {
 
     private Long id;

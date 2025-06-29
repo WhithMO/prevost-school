@@ -1,10 +1,10 @@
-package com.colegio.prevost.service;
+package com.colegio.prevost.service.delegate;
 
 import java.util.List;
 
 import com.colegio.prevost.model.Incident;
 
-public interface IncidentService {
+public interface IncidentDeletage {
     Incident getIncidentById(Long id);
     List<Incident> getAllIncidents();
     Incident createIncident(Incident incident);

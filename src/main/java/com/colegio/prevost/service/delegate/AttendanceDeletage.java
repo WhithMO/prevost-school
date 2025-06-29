@@ -1,10 +1,10 @@
-package com.colegio.prevost.service;
+package com.colegio.prevost.service.delegate;
 
 import java.util.List;
 
 import com.colegio.prevost.model.Attendance;
 
-public interface AttendanceService {
+public interface AttendanceDeletage {
 
     Attendance getAttendanceById(Long id);
     List<Attendance> getAllAttendances();

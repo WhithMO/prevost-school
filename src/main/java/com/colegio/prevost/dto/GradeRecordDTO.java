@@ -2,6 +2,9 @@ package com.colegio.prevost.dto;
 
 import com.colegio.prevost.util.enums.EvaluationEnum;
 
+import lombok.Data;
+
+@Data
 public class GradeRecordDTO {
 
     private Long id;

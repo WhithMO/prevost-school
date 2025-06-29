@@ -1,4 +1,4 @@
-package com.colegio.prevost.service.impl;
+package com.colegio.prevost.service.delegate.impl;
 
 import java.util.List;
 
@@ -6,13 +6,13 @@ import org.springframework.stereotype.Service;
 
 import com.colegio.prevost.model.User;
 import com.colegio.prevost.repository.UserRepository;
-import com.colegio.prevost.service.UserService;
+import com.colegio.prevost.service.delegate.UserDeletage;
 
 import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
-public class UserServiceImpl implements UserService {
+public class UserDeletageImpl implements UserDeletage {
 
     private final UserRepository repository;
 

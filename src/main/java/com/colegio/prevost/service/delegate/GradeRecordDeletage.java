@@ -1,10 +1,10 @@
-package com.colegio.prevost.service;
+package com.colegio.prevost.service.delegate;
 
 import java.util.List;
 
 import com.colegio.prevost.model.GradeRecord;
 
-public interface GradeRecordService {
+public interface GradeRecordDeletage {
     GradeRecord getGradeRecordById(Long id);
     List<GradeRecord> getAllGradeRecords();
     GradeRecord createGradeRecord(GradeRecord gradeRecord);

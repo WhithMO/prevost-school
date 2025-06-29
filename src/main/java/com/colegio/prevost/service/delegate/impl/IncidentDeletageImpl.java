@@ -1,4 +1,4 @@
-package com.colegio.prevost.service.impl;
+package com.colegio.prevost.service.delegate.impl;
 
 import java.util.List;
 
@@ -6,13 +6,13 @@ import org.springframework.stereotype.Service;
 
 import com.colegio.prevost.model.Incident;
 import com.colegio.prevost.repository.IncidentRepository;
-import com.colegio.prevost.service.IncidentService;
+import com.colegio.prevost.service.delegate.IncidentDeletage;
 
 import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
-public class IncidentServiceImpl implements IncidentService {
+public class IncidentDeletageImpl implements IncidentDeletage {
 
     private final IncidentRepository repository;
 

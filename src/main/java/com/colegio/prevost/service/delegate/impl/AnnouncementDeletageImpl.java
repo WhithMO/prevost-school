@@ -1,4 +1,4 @@
-package com.colegio.prevost.service.impl;
+package com.colegio.prevost.service.delegate.impl;
 
 import java.util.List;
 
@@ -6,13 +6,13 @@ import org.springframework.stereotype.Service;
 
 import com.colegio.prevost.model.Announcement;
 import com.colegio.prevost.repository.AnnouncementRepository;
-import com.colegio.prevost.service.AnnouncementService;
+import com.colegio.prevost.service.delegate.AnnouncementDeletage;
 
 import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
-public class AnnouncementServiceImpl implements AnnouncementService {
+public class AnnouncementDeletageImpl implements AnnouncementDeletage {
 
     private final AnnouncementRepository repository;
 

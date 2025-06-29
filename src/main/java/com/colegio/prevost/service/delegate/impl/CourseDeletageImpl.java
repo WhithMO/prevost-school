@@ -1,4 +1,4 @@
-package com.colegio.prevost.service.impl;
+package com.colegio.prevost.service.delegate.impl;
 
 import java.util.List;
 
@@ -6,13 +6,13 @@ import org.springframework.stereotype.Service;
 
 import com.colegio.prevost.model.Course;
 import com.colegio.prevost.repository.CourseRepository;
-import com.colegio.prevost.service.CourseService;
+import com.colegio.prevost.service.delegate.CourseDeletage;
 
 import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
-public class CourseServiceImpl implements CourseService {
+public class CourseDeletageImpl implements CourseDeletage {
 
     private final CourseRepository repository;
 
