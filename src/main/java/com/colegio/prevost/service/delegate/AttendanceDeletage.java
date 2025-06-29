@@ -2,13 +2,14 @@ package com.colegio.prevost.service.delegate;
 
 import java.util.List;
 
+import com.colegio.prevost.dto.AttendanceDTO;
 import com.colegio.prevost.model.Attendance;
 
 public interface AttendanceDeletage {
 
-    Attendance getAttendanceById(Long id);
-    List<Attendance> getAllAttendances();
-    Attendance createAttendance(Attendance attendance);
-    Attendance updateAttendance(Long id, Attendance attendance);
+    AttendanceDTO getAttendanceById(Long id);
+    List<AttendanceDTO> getAllAttendances();
+    AttendanceDTO createAttendance(AttendanceDTO attendance);
+    AttendanceDTO updateAttendance(Long id, AttendanceDTO attendance);
     void deleteAttendance(Long id);
 }

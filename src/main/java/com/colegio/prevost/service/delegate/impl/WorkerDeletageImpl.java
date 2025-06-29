@@ -10,6 +10,7 @@ import com.colegio.prevost.model.Worker;
 import com.colegio.prevost.repository.UserRepository;
 import com.colegio.prevost.repository.WorkerRepository;
 import com.colegio.prevost.service.delegate.WorkerDeletage;
+import com.colegio.prevost.util.mapper.WorkerMapper;
 
 import lombok.RequiredArgsConstructor;
 
@@ -19,41 +20,56 @@ public class WorkerDeletageImpl implements WorkerDeletage {
 
     private final WorkerRepository workerRepository;
     private final UserRepository userRepository;
+    private final WorkerMapper mapper;
 
     @Override
-    public Worker getWorkerById(Long id) {
-        return workerRepository.findById(id).orElse(null);
+    public WorkerDTO getWorkerById(Long id) {
+        Worker worker = workerRepository.findById(id).orElse(null);
+        User user = userRepository.findById(id).orElse(null);
+        if (worker != null && user != null) {
+            return new WorkerDTO().getWorkerDTO(worker, user);
+        }
+        return null;
     }
 
     @Override
-    public List<Worker> getAllWorkers() {
-        return workerRepository.findAll();
+    public List<WorkerDTO> getAllWorkers() {
+        return workerRepository.findAll().stream()
+                .map(worker -> getWorkerById(worker.getUserId()))
+                .toList();
     }
 
     @Override
-    public Worker createWorker(Worker worker) {
-        return workerRepository.save(worker);
+    public WorkerDTO createWorker(WorkerDTO worker) {
+        User user = userRepository.save(new User().getUserFromDto(worker));
+        Worker savedWorker = workerRepository.save(new Worker(
+                user,
+                worker.getHiringDate(),
+                worker.getTerminationDate(),
+                worker.getMobileNumber()
+        ));
+        return mapper.toWorkerDTO(savedWorker);
     }
 
     @Override
-    public WorkerDTO updateWorker(Long id, Worker worker, User user) {
+    public WorkerDTO updateWorker(Long id, WorkerDTO worker) {
         User existingUser = userRepository.findById(id).orElse(null);
         Worker existingWorker = workerRepository.findById(id).orElse(null);
 
-        if (existingUser != null) {
-            existingUser.setCode(user.getCode());
-            existingUser.setNames(user.getNames());
-            existingUser.setSurNames(user.getSurNames());
-            existingUser.setEmail(user.getEmail());
+        if (existingUser != null && existingWorker != null) {
+            existingUser.setCode(worker.getCode());
+            existingUser.setNames(worker.getNames());
+            existingUser.setSurNames(worker.getSurNames());
+            existingUser.setEmail(worker.getEmail());
             userRepository.save(existingUser);
-        }
-        if (existingWorker != null) {
+
             existingWorker.setMobileNumber(worker.getMobileNumber());
             existingWorker.setHiringDate(worker.getHiringDate());
             existingWorker.setTerminationDate(worker.getTerminationDate());
             workerRepository.save(existingWorker);
+            return worker;
         }
-        return new WorkerDTO().getWorkerDTO(worker, user);
+        return null;
     }
 
     @Override

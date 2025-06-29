@@ -8,10 +8,12 @@ import jakarta.persistence.MapsId;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "parent_profiles")
 @Data
+@NoArgsConstructor
 public class Parent {
 
     @Id
@@ -23,4 +25,10 @@ public class Parent {
     private User user;
 
     private Integer mobileNumber;
+
+    public Parent(User user, Integer mobileNumber) {
+        this.user = user;
+        this.mobileNumber = mobileNumber;
+    }
+
 }

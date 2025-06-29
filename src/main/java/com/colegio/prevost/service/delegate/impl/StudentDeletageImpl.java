@@ -10,6 +10,7 @@ import com.colegio.prevost.model.User;
 import com.colegio.prevost.repository.StudentRepository;
 import com.colegio.prevost.repository.UserRepository;
 import com.colegio.prevost.service.delegate.StudentDeletage;
+import com.colegio.prevost.util.mapper.StudentMapper;
 
 import lombok.RequiredArgsConstructor;
 
@@ -19,32 +20,47 @@ public class StudentDeletageImpl implements StudentDeletage {
 
     private final StudentRepository studentRepository;
     private final UserRepository userRepository;
+    private final StudentMapper mapper;
 
     @Override
-    public Student getStudentById(Long id) {
-        return studentRepository.findById(id).orElse(null);
+    public StudentDTO getStudentById(Long id) {
+        Student student = studentRepository.findById(id).orElse(null);
+        User user = userRepository.findById(id).orElse(null);
+        if (student != null && user != null) {
+            return new StudentDTO().getStudentDTO(student, user);
+        }
+        return null;
     }
 
     @Override
-    public List<Student> getAllStudents() {
-        return studentRepository.findAll();
+    public List<StudentDTO> getAllStudents() {
+        return studentRepository.findAll().stream()
+                .map(student -> getStudentById(student.getUserId()))
+                .toList();
     }
 
     @Override
-    public Student createStudent(Student student) {
-        return studentRepository.save(student);
+    public StudentDTO createStudent(StudentDTO student) {
+        User user = userRepository.save(new User().getUserFromDto(student));
+        Student studentEntity = studentRepository.save(new Student(
+                user,
+                student.getGradeEnum(),
+                student.getAdmissionDate(),
+                student.getEgressDate()
+        ));
+        return mapper.toDto(studentEntity);
     }
 
     @Override
-    public StudentDTO updateStudent(Long id, Student student, User user) {
+    public StudentDTO updateStudent(Long id, StudentDTO student) {
         User existingUser = userRepository.findById(id).orElse(null);
         Student existingStudent = studentRepository.findById(id).orElse(null);
 
-        if (existingUser != null) {
-            existingUser.setCode(user.getCode());
-            existingUser.setNames(user.getNames());
-            existingUser.setSurNames(user.getSurNames());
-            existingUser.setEmail(user.getEmail());
+        if (existingUser != null && existingStudent != null) {
+            existingUser.setCode(student.getCode());
+            existingUser.setNames(student.getNames());
+            existingUser.setSurNames(student.getSurNames());
+            existingUser.setEmail(student.getEmail());
             userRepository.save(existingUser);
         }
         if (existingStudent != null) {
@@ -52,8 +68,9 @@ public class StudentDeletageImpl implements StudentDeletage {
             existingStudent.setAdmissionDate(student.getAdmissionDate());
             existingStudent.setEgressDate(student.getEgressDate());
             studentRepository.save(existingStudent);
+            return student;
         }
-        return new StudentDTO().getStudentDTO(student, user);
+        return null;
     }
 
     @Override

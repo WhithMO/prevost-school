@@ -11,11 +11,12 @@ import jakarta.persistence.MapsId;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.Data;
-
+import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "worker_profiles")
 @Data
+@NoArgsConstructor
 public class Worker {
 
     @Id
@@ -33,4 +34,12 @@ public class Worker {
     private LocalDate terminationDate;
 
     private Integer mobileNumber;
+
+    public Worker(User user, LocalDate hiringDate, LocalDate terminationDate, Integer mobileNumber) {
+        this.user = user;
+        this.hiringDate = hiringDate;
+        this.terminationDate = terminationDate;
+        this.mobileNumber = mobileNumber;
+    }
+
 }

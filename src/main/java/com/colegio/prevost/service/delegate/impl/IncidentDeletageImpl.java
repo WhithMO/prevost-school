@@ -1,12 +1,15 @@
 package com.colegio.prevost.service.delegate.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import com.colegio.prevost.dto.IncidentDTO;
 import com.colegio.prevost.model.Incident;
 import com.colegio.prevost.repository.IncidentRepository;
 import com.colegio.prevost.service.delegate.IncidentDeletage;
+import com.colegio.prevost.util.mapper.IncidentMapper;
 
 import lombok.RequiredArgsConstructor;
 
@@ -15,30 +18,35 @@ import lombok.RequiredArgsConstructor;
 public class IncidentDeletageImpl implements IncidentDeletage {
 
     private final IncidentRepository repository;
+    private final IncidentMapper mapper;
 
     @Override
-    public Incident getIncidentById(Long id) {
-        return repository.findById(id).orElse(null);
+    public IncidentDTO getIncidentById(Long id) {
+        return mapper.toDto(repository.findById(id).orElse(null));
     }
 
     @Override
-    public List<Incident> getAllIncidents() {
-        return repository.findAll();
+    public List<IncidentDTO> getAllIncidents() {
+        List<IncidentDTO> dtos = new ArrayList<>();
+        for (Incident incident : repository.findAll()) {
+            dtos.add(mapper.toDto(incident));
+        }
+        return dtos;
     }
 
     @Override
-    public Incident createIncident(Incident incident) {
-        return repository.save(incident);
+    public IncidentDTO createIncident(IncidentDTO incident) {
+        return mapper.toDto(repository.save(mapper.toEntity(incident)));
     }
 
     @Override
-    public Incident updateIncident(Long id, Incident incident) {
-        Incident existingIncident = repository.findById(id).orElse(null);
-        if (existingIncident != null) {
-            existingIncident.setStudent(incident.getStudent());
-            existingIncident.setTeacher(incident.getTeacher());
-            existingIncident.setDescription(incident.getDescription());
-            return repository.save(existingIncident);
+    public IncidentDTO updateIncident(Long id, IncidentDTO incident) {
+        IncidentDTO existing = getIncidentById(id);
+        if (existing != null) {
+            existing.setStudent(incident.getStudent());
+            existing.setTeacher(incident.getTeacher());
+            existing.setDescription(incident.getDescription());
+            return mapper.toDto(repository.save(mapper.toEntity(existing)));
         }
         return null;
     }

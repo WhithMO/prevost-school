@@ -7,9 +7,9 @@ import com.colegio.prevost.model.Student;
 import com.colegio.prevost.model.User;
 
 public interface StudentDeletage {
-    Student getStudentById(Long id);
-    List<Student> getAllStudents();
-    Student createStudent(Student student);
-    StudentDTO updateStudent(Long id, Student student, User user);
+    StudentDTO getStudentById(Long id);
+    List<StudentDTO> getAllStudents();
+    StudentDTO createStudent(StudentDTO student);
+    StudentDTO updateStudent(Long id, StudentDTO student);
     void deleteStudent(Long id);
 }

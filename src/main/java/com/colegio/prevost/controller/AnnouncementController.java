@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.colegio.prevost.model.Announcement;
+import com.colegio.prevost.dto.AnnouncementDTO;
 import com.colegio.prevost.service.delegate.AnnouncementDeletage;
 
 import lombok.RequiredArgsConstructor;
@@ -25,25 +25,26 @@ public class AnnouncementController {
     private final AnnouncementDeletage service;
 
     @GetMapping("/{id}")
-    public ResponseEntity<Announcement> getAnnouncementById(@PathVariable Long id) {
-        Announcement announcement = service.getAnnouncementById(id);
+    public ResponseEntity<AnnouncementDTO> getAnnouncementById(@PathVariable Long id) {
+        AnnouncementDTO announcement = service.getAnnouncementById(id);
         return announcement != null ? ResponseEntity.ok(announcement) : ResponseEntity.notFound().build();
     }
 
     @GetMapping
-    public ResponseEntity<List<Announcement>> getAllAnnouncements() {
+    public ResponseEntity<List<AnnouncementDTO>> getAllAnnouncements() {
         return ResponseEntity.ok(service.getAllAnnouncements());
     }
 
     @PostMapping
-    public ResponseEntity<Announcement> createAnnouncement(@RequestBody Announcement announcement) {
+    public ResponseEntity<AnnouncementDTO> createAnnouncement(@RequestBody AnnouncementDTO announcement) {
         return ResponseEntity.ok(service.createAnnouncement(announcement));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Announcement> updateAnnouncement(@PathVariable Long id, @RequestBody Announcement announcement) {
-        Announcement updatedAnnouncement = service.updateAnnouncement(id, announcement);
-        return updatedAnnouncement != null ? ResponseEntity.ok(updatedAnnouncement) : ResponseEntity.notFound().build();
+    public ResponseEntity<AnnouncementDTO> updateAnnouncement(@PathVariable Long id, @RequestBody AnnouncementDTO announcement) {
+        AnnouncementDTO updatedAnnouncement = service.updateAnnouncement(id, announcement);
+        return updatedAnnouncement != null ? ResponseEntity.ok(updatedAnnouncement) :
+                ResponseEntity.notFound().build();
     }
 
     @DeleteMapping("/{id}")

@@ -8,7 +8,7 @@ import com.colegio.prevost.model.StudentCourse;
 @Mapper(componentModel = "spring")
 public interface StudentCourseMapper {
 
-     StudentCourseDTO toStudentCourseDTO(StudentCourse studentCourse);
-     StudentCourse toStudentCourse(StudentCourseDTO studentCourseDTO);
+     StudentCourseDTO toDto(StudentCourse studentCourse);
+     StudentCourse toEntity(StudentCourseDTO studentCourseDTO);
 
 }

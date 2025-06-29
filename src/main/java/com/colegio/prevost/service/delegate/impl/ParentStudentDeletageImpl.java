@@ -4,9 +4,13 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import com.colegio.prevost.dto.ParentStudentDTO;
 import com.colegio.prevost.model.ParentStudent;
 import com.colegio.prevost.repository.ParentStudentRepository;
 import com.colegio.prevost.service.delegate.ParentStudentDeletage;
+import com.colegio.prevost.util.mapper.ParentMapper;
+import com.colegio.prevost.util.mapper.ParentStudentMapper;
+import com.colegio.prevost.util.mapper.StudentMapper;
 
 import lombok.RequiredArgsConstructor;
 
@@ -15,30 +19,35 @@ import lombok.RequiredArgsConstructor;
 public class ParentStudentDeletageImpl implements ParentStudentDeletage {
 
     private final ParentStudentRepository repository;
+    private final ParentStudentMapper parentStudentMapper;
+    private final ParentMapper parentMapper;
+    private final StudentMapper studentMapper;
 
     @Override
-    public ParentStudent getParentStudentById(Long id) {
-        return repository.findById(id).orElse(null);
+    public ParentStudentDTO getParentStudentById(Long id) {
+        return parentStudentMapper.toDto(repository.findById(id).orElse(null));
     }
 
     @Override
-    public List<ParentStudent> getAllParentStudents() {
-        return repository.findAll();
+    public List<ParentStudentDTO> getAllParentStudents() {
+        return repository.findAll().stream()
+                .map(parentStudentMapper::toDto)
+                .toList();
     }
 
     @Override
-    public ParentStudent createParentStudent(ParentStudent parentStudent) {
-        return repository.save(parentStudent);
+    public ParentStudentDTO createParentStudent(ParentStudentDTO parentStudent) {
+        return parentStudentMapper.toDto(repository.save(parentStudentMapper.toEntity(parentStudent)));
     }
 
     @Override
-    public ParentStudent updateParentStudent(Long id, ParentStudent parentStudent) {
+    public ParentStudentDTO updateParentStudent(Long id, ParentStudentDTO parentStudent) {
        ParentStudent existingParentStudent = repository.findById(id).orElse(null);
        if (existingParentStudent != null) {
-           existingParentStudent.setParent(parentStudent.getParent());
-           existingParentStudent.setStudent(parentStudent.getStudent());
+           existingParentStudent.setParent(parentMapper.toEntity(parentStudent.getParent()));
+           existingParentStudent.setStudent(studentMapper.toEntity(parentStudent.getStudent()));
            existingParentStudent.setRelationship(parentStudent.getRelationship());
-           return repository.save(existingParentStudent);
+           return parentStudentMapper.toDto(repository.save(existingParentStudent));
        }
        return null;
     }

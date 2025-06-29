@@ -9,5 +9,5 @@ import com.colegio.prevost.model.Course;
 public interface CourseMapper {
 
      CourseDTO toCourseDTO(Course course);
-     Course toCourse(CourseDTO courseDTO);
+     Course toEntity(CourseDTO courseDTO);
 }

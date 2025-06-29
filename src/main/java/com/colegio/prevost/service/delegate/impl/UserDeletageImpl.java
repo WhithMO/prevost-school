@@ -4,9 +4,11 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import com.colegio.prevost.dto.UserDTO;
 import com.colegio.prevost.model.User;
 import com.colegio.prevost.repository.UserRepository;
 import com.colegio.prevost.service.delegate.UserDeletage;
+import com.colegio.prevost.util.mapper.UserMapper;
 
 import lombok.RequiredArgsConstructor;
 
@@ -14,26 +16,28 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class UserDeletageImpl implements UserDeletage {
 
-    private final UserRepository repository;
+    private final UserRepository userRepository;
+    private final UserMapper mapper;
 
     @Override
-    public User getUserById(Long id) {
-        return repository.findById(id).orElse(null);
+    public UserDTO getUserById(Long id) {
+        return mapper.toDto(userRepository.findById(id).orElse(null));
     }
 
     @Override
-    public List<User> getAllUsers() {
-        return repository.findAll();
+    public List<UserDTO> getAllUsers() {
+        return userRepository.findAll().stream()
+                .map(mapper::toDto).toList();
     }
 
     @Override
-    public User createUser(User user) {
-        return repository.save(user);
+    public UserDTO createUser(UserDTO user) {
+        return mapper.toDto(userRepository.save(mapper.toEntity(user)));
     }
 
     @Override
-    public User updateUser(Long id, User user) {
-        User existingUser = repository.findById(id).orElse(null);
+    public UserDTO updateUser(Long id, UserDTO user) {
+        User existingUser = userRepository.findById(id).orElse(null);
         if (existingUser != null) {
            existingUser.setCode(user.getCode());
            existingUser.setNames(user.getNames());
@@ -41,14 +45,15 @@ public class UserDeletageImpl implements UserDeletage {
            existingUser.setEmail(user.getEmail());
            existingUser.setPassword(user.getPassword());
            existingUser.setRoles(user.getRoles());
-           return repository.save(existingUser);
+           userRepository.save(existingUser);
+           return user;
         }
         return null;
     }
 
     @Override
     public void deleteUser(Long id) {
-        repository.deleteById(id);
+        userRepository.deleteById(id);
     }
 
 }

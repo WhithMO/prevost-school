@@ -8,6 +8,6 @@ import com.colegio.prevost.model.Parent;
 @Mapper(componentModel = "spring")
 public interface ParentMapper {
 
-     ParentDTO toParentDTO(Parent parent);
-     Parent toParent(ParentDTO parentDTO);
+     ParentDTO toDto(Parent parent);
+     Parent toEntity(ParentDTO parentDTO);
 }

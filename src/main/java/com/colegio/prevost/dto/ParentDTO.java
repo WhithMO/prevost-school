@@ -3,16 +3,20 @@ package com.colegio.prevost.dto;
 import com.colegio.prevost.model.Parent;
 import com.colegio.prevost.model.User;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 
 @EqualsAndHashCode(callSuper = true)
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class ParentDTO extends UserDTO {
 
     private Integer mobileNumber;
 
-    public ParentDTO getParentDTO(Parent parent, User user) {
+    public ParentDTO getParentDTOFromEntity(Parent parent, User user) {
         ParentDTO parentDTO = new ParentDTO();
         parentDTO.setCode(user.getCode());
         parentDTO.setNames(user.getNames());
@@ -21,4 +25,9 @@ public class ParentDTO extends UserDTO {
         parentDTO.setMobileNumber(parent.getMobileNumber());
         return parentDTO;
     }
+
+    public Integer getMobileNumber() {
+        return mobileNumber != null ? mobileNumber : null;
+    }
+
 }

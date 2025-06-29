@@ -10,6 +10,7 @@ import com.colegio.prevost.model.User;
 import com.colegio.prevost.repository.ParentRepository;
 import com.colegio.prevost.repository.UserRepository;
 import com.colegio.prevost.service.delegate.ParentDeletage;
+import com.colegio.prevost.util.mapper.ParentMapper;
 
 import lombok.RequiredArgsConstructor;
 
@@ -19,40 +20,50 @@ public class ParentDeletageImpl implements ParentDeletage {
 
     private final ParentRepository parentRepository;
     private final UserRepository userRepository;
+    private final ParentMapper mapper;
 
     @Override
-    public Parent getParentById(Long id) {
-        return parentRepository.findById(id).orElse(null);
+    public ParentDTO getParentById(Long id) {
+        Parent parent = parentRepository.findById(id).orElse(null);
+        User user = userRepository.findById(id).orElse(null);
+        if (parent != null && user != null) {
+            return new ParentDTO().getParentDTOFromEntity(parent, user);
+        }
+        return null;
     }
 
     @Override
-    public List<Parent> getAllParents() {
-        return parentRepository.findAll();
+    public List<ParentDTO> getAllParents() {
+        return parentRepository.findAll().stream()
+                .map(parent -> getParentById(parent.getUserId()))
+                .toList();
     }
 
     @Override
-    public Parent createParent(Parent parent) {
-        return parentRepository.save(parent);
+    public ParentDTO createParent(ParentDTO parent) {
+        User user = userRepository.save(new User().getUserFromDto(parent));
+        Parent savedParent = parentRepository.save(new Parent(user, parent.getMobileNumber()));
+        return mapper.toDto(savedParent);
     }
 
     @Override
-    public ParentDTO updateParent(Long id, Parent parent, User user) {
+    public ParentDTO updateParent(Long id, ParentDTO parent) {
         User existingUser = userRepository.findById(id).orElse(null);
         Parent existingParent = parentRepository.findById(id).orElse(null);
 
-        if (existingUser != null) {
-            existingUser.setCode(user.getCode());
-            existingUser.setNames(user.getNames());
-            existingUser.setSurNames(user.getSurNames());
-            existingUser.setEmail(user.getEmail());
+        if (existingUser != null && existingParent != null) {
+            existingUser.setCode(parent.getCode());
+            existingUser.setNames(parent.getNames());
+            existingUser.setSurNames(parent.getSurNames());
+            existingUser.setEmail(parent.getEmail());
             userRepository.save(existingUser);
-        }
 
-        if (existingParent != null) {
             existingParent.setMobileNumber(parent.getMobileNumber());
             parentRepository.save(existingParent);
+            return parent;
         }
-        return new ParentDTO().getParentDTO(parent, user);
+
+       return null;
     }
 
     @Override

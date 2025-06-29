@@ -9,7 +9,7 @@ public class ParentStudentDTO {
 
     private Long id;
 
-    private UserDTO parent;
+    private ParentDTO parent;
 
     private StudentDTO student;
 

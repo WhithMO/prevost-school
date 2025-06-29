@@ -39,5 +39,11 @@ public class Student {
     @Column(name = "egress_date")
     private LocalDate egressDate;
 
+    public Student(User user, GradeEnum gradeEnum, LocalDate admissionDate, LocalDate egressDate) {
+        this.user = user;
+        this.gradeEnum = gradeEnum;
+        this.admissionDate = admissionDate;
+        this.egressDate = egressDate;
+    }
 
 }

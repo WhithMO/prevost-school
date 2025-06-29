@@ -1,12 +1,16 @@
 package com.colegio.prevost.service.delegate.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import com.colegio.prevost.dto.GradeRecordDTO;
 import com.colegio.prevost.model.GradeRecord;
 import com.colegio.prevost.repository.GradeRecordRepository;
 import com.colegio.prevost.service.delegate.GradeRecordDeletage;
+import com.colegio.prevost.util.mapper.CourseMapper;
+import com.colegio.prevost.util.mapper.GradeRecordMapper;
 
 import lombok.RequiredArgsConstructor;
 
@@ -15,32 +19,37 @@ import lombok.RequiredArgsConstructor;
 public class GradeRecordDeletageImpl implements GradeRecordDeletage {
 
     private final GradeRecordRepository repository;
+    private final GradeRecordMapper mapper;
 
     @Override
-    public GradeRecord getGradeRecordById(Long id) {
-        return repository.findById(id).orElse(null);
+    public GradeRecordDTO getGradeRecordById(Long id) {
+        return mapper.toDto(repository.findById(id).orElse(null));
     }
 
     @Override
-    public List<GradeRecord> getAllGradeRecords() {
-        return repository.findAll();
+    public List<GradeRecordDTO> getAllGradeRecords() {
+        List<GradeRecordDTO> dtos = new ArrayList<>();
+        for (GradeRecord gr : repository.findAll()) {
+            dtos.add(mapper.toDto(gr));
+        }
+        return dtos;
     }
 
     @Override
-    public GradeRecord createGradeRecord(GradeRecord gradeRecord) {
-        return repository.save(gradeRecord);
+    public GradeRecordDTO createGradeRecord(GradeRecordDTO gradeRecord) {
+        return mapper.toDto(repository.save(mapper.toEntity(gradeRecord)));
     }
 
     @Override
-    public GradeRecord updateGradeRecord(Long id, GradeRecord gradeRecord) {
-        GradeRecord existingGradeRecord = repository.findById(id).orElse(null);
-        if (existingGradeRecord != null) {
-            existingGradeRecord.setStudent(gradeRecord.getStudent());
-            existingGradeRecord.setCourse(gradeRecord.getCourse());
-            existingGradeRecord.setTeacher(gradeRecord.getTeacher());
-            existingGradeRecord.setEvaluation(gradeRecord.getEvaluation());
-            existingGradeRecord.setScore(gradeRecord.getScore());
-            return repository.save(existingGradeRecord);
+    public GradeRecordDTO updateGradeRecord(Long id, GradeRecordDTO gradeRecord) {
+        GradeRecordDTO existing = getGradeRecordById(id);
+        if (existing != null) {
+            existing.setStudent(gradeRecord.getStudent());
+            existing.setCourse(gradeRecord.getCourse());
+            existing.setTeacher(gradeRecord.getTeacher());
+            existing.setEvaluation(gradeRecord.getEvaluation());
+            existing.setScore(gradeRecord.getScore());
+            return mapper.toDto(repository.save(mapper.toEntity(existing)));
         }
         return null;
     }
