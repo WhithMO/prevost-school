@@ -16,7 +16,7 @@ import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
-public class StudentCourseServiceImpl implements StudentCourseDeletage {
+public class StudentCourseDelegateImpl implements StudentCourseDeletage {
 
     private final StudentCourseRepository repository;
     private final StudentCourseMapper studentCourseMapper;

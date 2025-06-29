@@ -9,7 +9,6 @@ import com.colegio.prevost.dto.GradeRecordDTO;
 import com.colegio.prevost.model.GradeRecord;
 import com.colegio.prevost.repository.GradeRecordRepository;
 import com.colegio.prevost.service.delegate.GradeRecordDeletage;
-import com.colegio.prevost.util.mapper.CourseMapper;
 import com.colegio.prevost.util.mapper.GradeRecordMapper;
 
 import lombok.RequiredArgsConstructor;

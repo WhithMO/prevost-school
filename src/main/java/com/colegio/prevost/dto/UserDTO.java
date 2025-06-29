@@ -9,6 +9,7 @@ import lombok.Data;
 @Data
 public class UserDTO {
 
+    private Long id;
     private String username;
     private String password;
     private String code;
@@ -16,6 +17,10 @@ public class UserDTO {
     private String surNames;
     private String email;
     private Set<Role> roles;
+
+    public Long getId() {
+        return id != null ? id : null;
+    }
 
     public String getUsername() {
         return username != null ? username : null;
