@@ -41,6 +41,9 @@ public class WorkerDeletageImpl implements WorkerDeletage {
 
     @Override
     public WorkerDTO createWorker(WorkerDTO worker) {
+        String contructedId = String.format("%s-%s", worker.getSurNames()
+                .toUpperCase().charAt(0), worker.getDocumentNumber());
+        worker.setUsername(contructedId);
         User user = userRepository.save(new User().getUserFromDto(worker));
         Worker savedWorker = workerRepository.save(new Worker(
                 user,

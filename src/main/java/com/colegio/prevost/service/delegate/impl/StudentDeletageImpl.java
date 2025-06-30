@@ -42,6 +42,9 @@ public class StudentDeletageImpl implements StudentDeletage {
 
     @Override
     public StudentDTO createStudent(StudentDTO student) {
+        String contructedId = String.format("%s-%s", student.getSurNames()
+                .toUpperCase().charAt(0), student.getDocumentNumber());
+        student.setUsername(contructedId);
         User user = userRepository.save(new User().getUserFromDto(student));
         Student studentEntity = studentRepository.save(new Student(
                 user,

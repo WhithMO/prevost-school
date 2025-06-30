@@ -38,13 +38,16 @@ public class User {
     @Column(nullable = false)
     private String password;
 
+    @Column(unique = true, nullable = false)
+    private String documentNumber;
+
     @Column(nullable = false)
     private String names;
 
     @Column(nullable = false)
     private String surNames;
 
-    @Column(unique = true, nullable = false)
+    @Column(nullable = false)
     private String email;
 
     @ManyToMany(fetch = FetchType.EAGER)

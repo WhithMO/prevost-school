@@ -40,6 +40,9 @@ public class ParentDeletageImpl implements ParentDeletage {
 
     @Override
     public ParentDTO createParent(ParentDTO parent) {
+        String contructedId = String.format("%s-%s", parent.getSurNames()
+        .toUpperCase().charAt(0), parent.getDocumentNumber());
+        parent.setUsername(contructedId);
         User user = userRepository.save(new User().getUserFromDto(parent));
         Parent savedParent = parentRepository.save(new Parent(user, parent.getMobileNumber()));
         return mapper.toDto(savedParent);

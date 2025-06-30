@@ -12,6 +12,7 @@ public class UserDTO {
     private Long id;
     private String username;
     private String password;
+    private String documentNumber;
     private String names;
     private String surNames;
     private String email;
@@ -27,6 +28,10 @@ public class UserDTO {
 
     public String getPassword() {
         return password != null ? password : null;
+    }
+
+    public String getDocumentNumber() {
+        return documentNumber != null ? documentNumber : null;
     }
 
     public String getNames() {
