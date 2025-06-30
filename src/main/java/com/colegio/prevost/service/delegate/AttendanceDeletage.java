@@ -7,9 +7,9 @@ import com.colegio.prevost.model.Attendance;
 
 public interface AttendanceDeletage {
 
-    AttendanceDTO getAttendanceById(Long id);
+    AttendanceDTO getAttendanceById(String id);
     List<AttendanceDTO> getAllAttendances();
     AttendanceDTO createAttendance(AttendanceDTO attendance);
-    AttendanceDTO updateAttendance(Long id, AttendanceDTO attendance);
-    void deleteAttendance(Long id);
+    AttendanceDTO updateAttendance(String id, AttendanceDTO attendance);
+    void deleteAttendance(String id);
 }

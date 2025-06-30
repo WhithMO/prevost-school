@@ -25,7 +25,7 @@ public class AttendanceController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<AttendanceDTO> getAttendanceById(@PathVariable Long id) {
+    public ResponseEntity<AttendanceDTO> getAttendanceById(@PathVariable String id) {
         AttendanceDTO dto = attendanceDelegate.getAttendanceById(id);
         return dto != null
                 ? ResponseEntity.ok(dto)
@@ -42,7 +42,7 @@ public class AttendanceController {
 
     @PutMapping("/{id}")
     public ResponseEntity<AttendanceDTO> updateAttendance(
-            @PathVariable Long id,
+            @PathVariable String id,
             @RequestBody AttendanceDTO attendance) {
 
         AttendanceDTO updated = attendanceDelegate.updateAttendance(id, attendance);
@@ -52,7 +52,7 @@ public class AttendanceController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteAttendance(@PathVariable Long id) {
+    public ResponseEntity<Void> deleteAttendance(@PathVariable String id) {
         attendanceDelegate.deleteAttendance(id);
         return ResponseEntity.noContent().build();
     }

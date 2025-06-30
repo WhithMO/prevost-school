@@ -21,8 +21,9 @@ public class GradeRecordDeletageImpl implements GradeRecordDeletage {
     private final GradeRecordMapper mapper;
 
     @Override
-    public GradeRecordDTO getGradeRecordById(Long id) {
-        return mapper.toDto(repository.findById(id).orElse(null));
+    public GradeRecordDTO getGradeRecordById(String id) {
+        Long convertedId = getConvertedId(id);
+        return mapper.toDto(repository.findById(convertedId).orElse(null));
     }
 
     @Override
@@ -40,7 +41,7 @@ public class GradeRecordDeletageImpl implements GradeRecordDeletage {
     }
 
     @Override
-    public GradeRecordDTO updateGradeRecord(Long id, GradeRecordDTO gradeRecord) {
+    public GradeRecordDTO updateGradeRecord(String id, GradeRecordDTO gradeRecord) {
         GradeRecordDTO existing = getGradeRecordById(id);
         if (existing != null) {
             existing.setStudent(gradeRecord.getStudent());
@@ -54,8 +55,13 @@ public class GradeRecordDeletageImpl implements GradeRecordDeletage {
     }
 
     @Override
-    public void deleteGradeRecord(Long id) {
-        repository.deleteById(id);
+    public void deleteGradeRecord(String id) {
+        Long convertedId = getConvertedId(id);
+        repository.deleteById(convertedId);
+    }
+
+    private static long getConvertedId(String id) {
+        return Long.parseLong(id.substring(8));
     }
 
 }

@@ -25,7 +25,7 @@ public class CourseController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<CourseDTO> getCourseById(@PathVariable Long id) {
+    public ResponseEntity<CourseDTO> getCourseById(@PathVariable String id) {
         CourseDTO dto = courseDelegate.getCourseById(id);
         return dto != null
                 ? ResponseEntity.ok(dto)
@@ -42,7 +42,7 @@ public class CourseController {
 
     @PutMapping("/{id}")
     public ResponseEntity<CourseDTO> updateCourse(
-            @PathVariable Long id,
+            @PathVariable String id,
             @RequestBody CourseDTO course) {
 
         CourseDTO updated = courseDelegate.updateCourse(id, course);
@@ -52,7 +52,7 @@ public class CourseController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteCourse(@PathVariable Long id) {
+    public ResponseEntity<Void> deleteCourse(@PathVariable String id) {
         courseDelegate.deleteCourse(id);
         return ResponseEntity.noContent().build();
     }

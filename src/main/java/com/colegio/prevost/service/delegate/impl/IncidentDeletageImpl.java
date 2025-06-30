@@ -21,8 +21,9 @@ public class IncidentDeletageImpl implements IncidentDeletage {
     private final IncidentMapper mapper;
 
     @Override
-    public IncidentDTO getIncidentById(Long id) {
-        return mapper.toDto(repository.findById(id).orElse(null));
+    public IncidentDTO getIncidentById(String id) {
+        Long convertedId = getConvertedId(id);
+        return mapper.toDto(repository.findById(convertedId).orElse(null));
     }
 
     @Override
@@ -40,7 +41,7 @@ public class IncidentDeletageImpl implements IncidentDeletage {
     }
 
     @Override
-    public IncidentDTO updateIncident(Long id, IncidentDTO incident) {
+    public IncidentDTO updateIncident(String id, IncidentDTO incident) {
         IncidentDTO existing = getIncidentById(id);
         if (existing != null) {
             existing.setStudent(incident.getStudent());
@@ -52,8 +53,13 @@ public class IncidentDeletageImpl implements IncidentDeletage {
     }
 
     @Override
-    public void deleteIncident(Long id) {
-        repository.deleteById(id);
+    public void deleteIncident(String id) {
+        Long convertedId = getConvertedId(id);
+        repository.deleteById(convertedId);
+    }
+
+    private static long getConvertedId(String id) {
+        return Long.parseLong(id.substring(8));
     }
 
 }

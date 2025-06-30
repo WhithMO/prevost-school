@@ -4,7 +4,14 @@ import java.net.URI;
 import java.util.List;
 
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.colegio.prevost.dto.StudentCourseDTO;
 import com.colegio.prevost.service.delegate.StudentCourseDeletage;
@@ -25,7 +32,7 @@ public class StudentCourseController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<StudentCourseDTO> getStudentCourseById(@PathVariable Long id) {
+    public ResponseEntity<StudentCourseDTO> getStudentCourseById(@PathVariable String id) {
         StudentCourseDTO dto = studentCourseDelegate.getStudentCourseById(id);
         return dto != null
                 ? ResponseEntity.ok(dto)
@@ -42,7 +49,7 @@ public class StudentCourseController {
 
     @PutMapping("/{id}")
     public ResponseEntity<StudentCourseDTO> updateStudentCourse(
-            @PathVariable Long id,
+            @PathVariable String id,
             @RequestBody StudentCourseDTO studentCourse) {
 
         StudentCourseDTO updated = studentCourseDelegate.updateStudentCourse(id, studentCourse);
@@ -52,7 +59,7 @@ public class StudentCourseController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteStudentCourse(@PathVariable Long id) {
+    public ResponseEntity<Void> deleteStudentCourse(@PathVariable String id) {
         studentCourseDelegate.deleteStudentCourse(id);
         return ResponseEntity.noContent().build();
     }

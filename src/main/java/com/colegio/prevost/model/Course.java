@@ -60,6 +60,6 @@ public class Course {
 
     @Transient
     public String getId() {
-        return "COURS-" + id;
+        return "COURSE-" + id;
     }
 }

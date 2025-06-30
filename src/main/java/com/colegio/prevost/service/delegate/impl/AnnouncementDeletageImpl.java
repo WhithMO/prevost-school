@@ -21,8 +21,9 @@ public class AnnouncementDeletageImpl implements AnnouncementDeletage {
     private final AnnouncementMapper mapper;
 
     @Override
-    public AnnouncementDTO getAnnouncementById(Long id) {
-        return mapper.toDto(repository.findById(id).orElse(null));
+    public AnnouncementDTO getAnnouncementById(String id) {
+        Long convertedId = getConvertedId(id);
+        return mapper.toDto(repository.findById(convertedId).orElse(null));
     }
 
     @Override
@@ -40,7 +41,7 @@ public class AnnouncementDeletageImpl implements AnnouncementDeletage {
     }
 
     @Override
-    public AnnouncementDTO updateAnnouncement(Long id, AnnouncementDTO announcement) {
+    public AnnouncementDTO updateAnnouncement(String id, AnnouncementDTO announcement) {
         AnnouncementDTO entity = getAnnouncementById(id);
      if (entity != null) {
          entity.setDescription(announcement.getDescription());
@@ -52,8 +53,13 @@ public class AnnouncementDeletageImpl implements AnnouncementDeletage {
     }
 
     @Override
-    public void deleteAnnouncement(Long id) {
-        repository.deleteById(id);
+    public void deleteAnnouncement(String id) {
+        Long convertedId = getConvertedId(id);
+        repository.deleteById(convertedId);
+    }
+
+    private long getConvertedId(String id) {
+        return Long.parseLong(id.substring(8));
     }
 
 }

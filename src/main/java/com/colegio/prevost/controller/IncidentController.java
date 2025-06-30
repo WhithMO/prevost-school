@@ -25,7 +25,7 @@ public class IncidentController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<IncidentDTO> getIncidentById(@PathVariable Long id) {
+    public ResponseEntity<IncidentDTO> getIncidentById(@PathVariable String id) {
         IncidentDTO dto = incidentDelegate.getIncidentById(id);
         return dto != null
                 ? ResponseEntity.ok(dto)
@@ -42,7 +42,7 @@ public class IncidentController {
 
     @PutMapping("/{id}")
     public ResponseEntity<IncidentDTO> updateIncident(
-            @PathVariable Long id,
+            @PathVariable String id,
             @RequestBody IncidentDTO incident) {
 
         IncidentDTO updated = incidentDelegate.updateIncident(id, incident);
@@ -52,7 +52,7 @@ public class IncidentController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteIncident(@PathVariable Long id) {
+    public ResponseEntity<Void> deleteIncident(@PathVariable String id) {
         incidentDelegate.deleteIncident(id);
         return ResponseEntity.noContent().build();
     }

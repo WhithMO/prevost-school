@@ -6,9 +6,9 @@ import com.colegio.prevost.dto.AnnouncementDTO;
 
 public interface AnnouncementDeletage {
 
-    AnnouncementDTO getAnnouncementById(Long id);
+    AnnouncementDTO getAnnouncementById(String id);
     List<AnnouncementDTO> getAllAnnouncements();
     AnnouncementDTO createAnnouncement(AnnouncementDTO announcement);
-    AnnouncementDTO updateAnnouncement(Long id, AnnouncementDTO announcement);
-    void deleteAnnouncement(Long id);
+    AnnouncementDTO updateAnnouncement(String id, AnnouncementDTO announcement);
+    void deleteAnnouncement(String id);
 }

@@ -56,6 +56,6 @@ public class GradeRecord {
 
     @Transient
     public String getId() {
-        return "GRADE-" + id;
+        return "GRADER-" + id;
     }
 }

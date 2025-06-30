@@ -25,7 +25,7 @@ public class GradeRecordController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<GradeRecordDTO> getGradeRecordById(@PathVariable Long id) {
+    public ResponseEntity<GradeRecordDTO> getGradeRecordById(@PathVariable String id) {
         GradeRecordDTO dto = gradeRecordDelegate.getGradeRecordById(id);
         return dto != null
                 ? ResponseEntity.ok(dto)
@@ -42,7 +42,7 @@ public class GradeRecordController {
 
     @PutMapping("/{id}")
     public ResponseEntity<GradeRecordDTO> updateGradeRecord(
-            @PathVariable Long id,
+            @PathVariable String id,
             @RequestBody GradeRecordDTO gradeRecord) {
 
         GradeRecordDTO updated = gradeRecordDelegate.updateGradeRecord(id, gradeRecord);
@@ -52,7 +52,7 @@ public class GradeRecordController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteGradeRecord(@PathVariable Long id) {
+    public ResponseEntity<Void> deleteGradeRecord(@PathVariable String id) {
         gradeRecordDelegate.deleteGradeRecord(id);
         return ResponseEntity.noContent().build();
     }

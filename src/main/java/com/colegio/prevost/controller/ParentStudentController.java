@@ -24,7 +24,7 @@ public class ParentStudentController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ParentStudentDTO> getParentStudentById(@PathVariable Long id) {
+    public ResponseEntity<ParentStudentDTO> getParentStudentById(@PathVariable String id) {
         ParentStudentDTO dto = delegate.getParentStudentById(id);
         return dto != null
                 ? ResponseEntity.ok(dto)
@@ -41,7 +41,7 @@ public class ParentStudentController {
 
     @PutMapping("/{id}")
     public ResponseEntity<ParentStudentDTO> updateParentStudent(
-            @PathVariable Long id,
+            @PathVariable String id,
             @RequestBody ParentStudentDTO parentStudent) {
 
         ParentStudentDTO updated = delegate.updateParentStudent(id, parentStudent);
@@ -51,7 +51,7 @@ public class ParentStudentController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteParentStudent(@PathVariable Long id) {
+    public ResponseEntity<Void> deleteParentStudent(@PathVariable String id) {
         delegate.deleteParentStudent(id);
         return ResponseEntity.noContent().build();
     }

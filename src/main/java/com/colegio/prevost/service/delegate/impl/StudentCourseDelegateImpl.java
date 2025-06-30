@@ -24,8 +24,9 @@ public class StudentCourseDelegateImpl implements StudentCourseDeletage {
     private final CourseMapper courseMapper;
 
     @Override
-    public StudentCourseDTO getStudentCourseById(Long id) {
-        return studentCourseMapper.toDto(repository.findById(id).orElse(null));
+    public StudentCourseDTO getStudentCourseById(String id) {
+        Long convertedId = getConvertedId(id);
+        return studentCourseMapper.toDto(repository.findById(convertedId).orElse(null));
     }
 
     @Override
@@ -41,8 +42,9 @@ public class StudentCourseDelegateImpl implements StudentCourseDeletage {
     }
 
     @Override
-    public StudentCourseDTO updateStudentCourse(Long id, StudentCourseDTO studentCourse) {
-      StudentCourse existingStudentCourse = repository.findById(id).orElse(null);
+    public StudentCourseDTO updateStudentCourse(String id, StudentCourseDTO studentCourse) {
+        Long convertedId = getConvertedId(id);
+      StudentCourse existingStudentCourse = repository.findById(convertedId).orElse(null);
       if (existingStudentCourse != null) {
           existingStudentCourse.setStudent(studentMapper.toEntity(studentCourse.getStudent()));
           existingStudentCourse.setCourse(courseMapper.toEntity(studentCourse.getCourse()));
@@ -54,8 +56,13 @@ public class StudentCourseDelegateImpl implements StudentCourseDeletage {
     }
 
     @Override
-    public void deleteStudentCourse(Long id) {
-        repository.deleteById(id);
+    public void deleteStudentCourse(String id) {
+        Long convertedId = getConvertedId(id);
+        repository.deleteById(convertedId);
+    }
+
+    private long getConvertedId(String id) {
+        return Long.parseLong(id.substring(13));
     }
 
 }

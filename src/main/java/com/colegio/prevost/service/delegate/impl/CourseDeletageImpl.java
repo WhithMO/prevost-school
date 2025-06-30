@@ -21,8 +21,9 @@ public class CourseDeletageImpl implements CourseDeletage {
     private final CourseMapper mapper;
 
     @Override
-    public CourseDTO getCourseById(Long id) {
-        return mapper.toCourseDTO(repository.findById(id).orElse(null));
+    public CourseDTO getCourseById(String id) {
+        Long convertedId = getConvertedId(id);
+        return mapper.toCourseDTO(repository.findById(convertedId).orElse(null));
     }
 
     @Override
@@ -40,7 +41,7 @@ public class CourseDeletageImpl implements CourseDeletage {
     }
 
     @Override
-    public CourseDTO updateCourse(Long id, CourseDTO course) {
+    public CourseDTO updateCourse(String id, CourseDTO course) {
         CourseDTO existingCourse = getCourseById(id);
         if (existingCourse != null) {
             existingCourse.setName(course.getName());
@@ -55,8 +56,13 @@ public class CourseDeletageImpl implements CourseDeletage {
     }
 
     @Override
-    public void deleteCourse(Long id) {
-        repository.deleteById(id);
+    public void deleteCourse(String id) {
+        Long convertedId = getConvertedId(id);
+        repository.deleteById(convertedId);
+    }
+
+    private long getConvertedId(String id) {
+        return Long.parseLong(id.substring(8));
     }
 
 }

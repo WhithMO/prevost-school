@@ -24,8 +24,9 @@ public class ParentStudentDeletageImpl implements ParentStudentDeletage {
     private final StudentMapper studentMapper;
 
     @Override
-    public ParentStudentDTO getParentStudentById(Long id) {
-        return parentStudentMapper.toDto(repository.findById(id).orElse(null));
+    public ParentStudentDTO getParentStudentById(String id) {
+        Long convertedId = getConvertedId(id);
+        return parentStudentMapper.toDto(repository.findById(convertedId).orElse(null));
     }
 
     @Override
@@ -41,8 +42,9 @@ public class ParentStudentDeletageImpl implements ParentStudentDeletage {
     }
 
     @Override
-    public ParentStudentDTO updateParentStudent(Long id, ParentStudentDTO parentStudent) {
-       ParentStudent existingParentStudent = repository.findById(id).orElse(null);
+    public ParentStudentDTO updateParentStudent(String id, ParentStudentDTO parentStudent) {
+        Long convertedId = getConvertedId(id);
+       ParentStudent existingParentStudent = repository.findById(convertedId).orElse(null);
        if (existingParentStudent != null) {
            existingParentStudent.setParent(parentMapper.toEntity(parentStudent.getParent()));
            existingParentStudent.setStudent(studentMapper.toEntity(parentStudent.getStudent()));
@@ -53,8 +55,13 @@ public class ParentStudentDeletageImpl implements ParentStudentDeletage {
     }
 
     @Override
-    public void deleteParentStudent(Long id) {
-        repository.deleteById(id);
+    public void deleteParentStudent(String id) {
+        Long convertedId = getConvertedId(id);
+        repository.deleteById(convertedId);
+    }
+
+    private long getConvertedId(String id) {
+        return Long.parseLong(id.substring(7));
     }
 
 }

@@ -21,8 +21,9 @@ public class AttendanceDeletageImpl implements AttendanceDeletage {
     private final AttendanceMapper mapper;
 
     @Override
-    public AttendanceDTO getAttendanceById(Long id) {
-        return mapper.toDto(repository.findById(id).orElse(null));
+    public AttendanceDTO getAttendanceById(String id) {
+        Long convertedId = getConvertedId(id);
+        return mapper.toDto(repository.findById(convertedId).orElse(null));
     }
 
     @Override
@@ -40,7 +41,7 @@ public class AttendanceDeletageImpl implements AttendanceDeletage {
     }
 
     @Override
-    public AttendanceDTO updateAttendance(Long id, AttendanceDTO attendance) {
+    public AttendanceDTO updateAttendance(String id, AttendanceDTO attendance) {
         AttendanceDTO existingAttendance = getAttendanceById(id);
          if (existingAttendance != null) {
              existingAttendance.setStudent(attendance.getStudent());
@@ -53,8 +54,13 @@ public class AttendanceDeletageImpl implements AttendanceDeletage {
     }
 
     @Override
-    public void deleteAttendance(Long id) {
-        repository.deleteById(id);
+    public void deleteAttendance(String id) {
+        Long convertedId = getConvertedId(id);
+        repository.deleteById(convertedId);
+    }
+
+    private Long getConvertedId(String id) {
+        return Long.parseLong(id.substring(8));
     }
 
 }

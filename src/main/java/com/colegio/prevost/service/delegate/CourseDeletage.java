@@ -5,9 +5,9 @@ import java.util.List;
 import com.colegio.prevost.dto.CourseDTO;
 
 public interface CourseDeletage {
-    CourseDTO getCourseById(Long id);
+    CourseDTO getCourseById(String id);
     List<CourseDTO> getAllCourses();
     CourseDTO createCourse(CourseDTO course);
-    CourseDTO updateCourse(Long id, CourseDTO course);
-    void deleteCourse(Long id);
+    CourseDTO updateCourse(String id, CourseDTO course);
+    void deleteCourse(String id);
 }
