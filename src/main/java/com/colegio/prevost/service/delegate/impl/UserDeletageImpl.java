@@ -21,7 +21,7 @@ public class UserDeletageImpl implements UserDeletage {
 
     @Override
     public UserDTO getUserById(String username) {
-        return mapper.toDto(userRepository.findByUserUsername(username));
+        return mapper.toDto(userRepository.findByUsername(username));
     }
 
     @Override
@@ -37,7 +37,7 @@ public class UserDeletageImpl implements UserDeletage {
 
     @Override
     public UserDTO updateUser(String username, UserDTO user) {
-        User existingUser = userRepository.findByUserUsername(username);
+        User existingUser = userRepository.findByUsername(username);
         if (existingUser != null) {
            existingUser.setNames(user.getNames());
            existingUser.setSurNames(user.getSurNames());
@@ -52,7 +52,7 @@ public class UserDeletageImpl implements UserDeletage {
 
     @Override
     public void deleteUser(String username) {
-        userRepository.deleteByUserUsername(username);
+        userRepository.deleteByUsername(username);
     }
 
 }
