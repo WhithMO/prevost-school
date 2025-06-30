@@ -36,7 +36,7 @@ public class WorkerController {
     public ResponseEntity<WorkerDTO> createWorker(@RequestBody WorkerDTO worker) {
         WorkerDTO created = workerDelegate.createWorker(worker);
         return ResponseEntity
-                .created(URI.create("/api/workers/" + created.getId()))
+                .created(URI.create("/api/workers/" + created.getUsername()))
                 .body(created);
     }
 

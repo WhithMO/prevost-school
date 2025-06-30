@@ -36,7 +36,7 @@ public class StudentController {
     public ResponseEntity<StudentDTO> createStudent(@RequestBody StudentDTO student) {
         StudentDTO created = studentDelegate.createStudent(student);
         return ResponseEntity
-                .created(URI.create("/api/students/" + created.getId()))
+                .created(URI.create("/api/students/" + created.getUsername()))
                 .body(created);
     }
 

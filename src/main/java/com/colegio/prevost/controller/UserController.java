@@ -25,8 +25,8 @@ public class UserController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<UserDTO> getUserById(@PathVariable Long id) {
-        UserDTO dto = userDelegate.getUserById(id);
+    public ResponseEntity<UserDTO> getUserById(@PathVariable String username) {
+        UserDTO dto = userDelegate.getUserById(username);
         return dto != null
                 ? ResponseEntity.ok(dto)
                 : ResponseEntity.notFound().build();
@@ -36,24 +36,24 @@ public class UserController {
     public ResponseEntity<UserDTO> createUser(@RequestBody UserDTO user) {
         UserDTO created = userDelegate.createUser(user);
         return ResponseEntity
-                .created(URI.create("/api/users/" + created.getId()))
+                .created(URI.create("/api/users/" + created.getUsername()))
                 .body(created);
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<UserDTO> updateUser(
-            @PathVariable Long id,
+            @PathVariable String username,
             @RequestBody UserDTO user) {
 
-        UserDTO updated = userDelegate.updateUser(id, user);
+        UserDTO updated = userDelegate.updateUser(username, user);
         return updated != null
                 ? ResponseEntity.ok(updated)
                 : ResponseEntity.notFound().build();
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
-        userDelegate.deleteUser(id);
+    public ResponseEntity<Void> deleteUser(@PathVariable String username) {
+        userDelegate.deleteUser(username);
         return ResponseEntity.noContent().build();
     }
 }

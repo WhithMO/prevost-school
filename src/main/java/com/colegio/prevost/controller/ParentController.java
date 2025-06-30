@@ -36,7 +36,7 @@ public class ParentController {
     public ResponseEntity<ParentDTO> createParent(@RequestBody ParentDTO parent) {
         ParentDTO created = parentDelegate.createParent(parent);
         return ResponseEntity
-                .created(URI.create("/api/parents/" + created.getId()))
+                .created(URI.create("/api/parents/" + created.getUsername()))
                 .body(created);
     }
 

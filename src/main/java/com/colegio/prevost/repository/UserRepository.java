@@ -6,4 +6,6 @@ import com.colegio.prevost.model.User;
 
 public interface UserRepository extends JpaRepository<User, Long> {
 
+    User findByUserUsername(String username);
+    User deleteByUserUsername(String username);
 }
