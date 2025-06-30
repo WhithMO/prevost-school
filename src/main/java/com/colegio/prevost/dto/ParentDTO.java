@@ -18,7 +18,6 @@ public class ParentDTO extends UserDTO {
 
     public ParentDTO getParentDTOFromEntity(Parent parent, User user) {
         ParentDTO parentDTO = new ParentDTO();
-        parentDTO.setCode(user.getCode());
         parentDTO.setNames(user.getNames());
         parentDTO.setSurNames(user.getSurNames());
         parentDTO.setEmail(user.getEmail());

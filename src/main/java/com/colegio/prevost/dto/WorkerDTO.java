@@ -18,7 +18,6 @@ public class WorkerDTO extends UserDTO {
 
     public WorkerDTO getWorkerDTO(Worker worker, User user) {
         WorkerDTO workerDTO = new WorkerDTO();
-        workerDTO.setCode(user.getCode());
         workerDTO.setNames(user.getNames());
         workerDTO.setSurNames(user.getSurNames());
         workerDTO.setEmail(user.getEmail());

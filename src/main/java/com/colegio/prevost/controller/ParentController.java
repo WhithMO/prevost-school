@@ -25,8 +25,8 @@ public class ParentController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ParentDTO> getParentById(@PathVariable Long id) {
-        ParentDTO dto = parentDelegate.getParentById(id);
+    public ResponseEntity<ParentDTO> getParentById(@PathVariable String username) {
+        ParentDTO dto = parentDelegate.getParentByUsername(username);
         return dto != null
                 ? ResponseEntity.ok(dto)
                 : ResponseEntity.notFound().build();
@@ -42,18 +42,18 @@ public class ParentController {
 
     @PutMapping("/{id}")
     public ResponseEntity<ParentDTO> updateParent(
-            @PathVariable Long id,
+            @PathVariable String username,
             @RequestBody ParentDTO parent) {
 
-        ParentDTO updated = parentDelegate.updateParent(id, parent);
+        ParentDTO updated = parentDelegate.updateParent(username, parent);
         return updated != null
                 ? ResponseEntity.ok(updated)
                 : ResponseEntity.notFound().build();
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteParent(@PathVariable Long id) {
-        parentDelegate.deleteParent(id);
+    public ResponseEntity<Void> deleteParent(@PathVariable String username) {
+        parentDelegate.deleteParent(username);
         return ResponseEntity.noContent().build();
     }
 }

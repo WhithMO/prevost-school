@@ -39,7 +39,6 @@ public class UserDeletageImpl implements UserDeletage {
     public UserDTO updateUser(Long id, UserDTO user) {
         User existingUser = userRepository.findById(id).orElse(null);
         if (existingUser != null) {
-           existingUser.setCode(user.getCode());
            existingUser.setNames(user.getNames());
            existingUser.setSurNames(user.getSurNames());
            existingUser.setEmail(user.getEmail());

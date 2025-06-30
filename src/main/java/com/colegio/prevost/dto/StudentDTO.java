@@ -21,7 +21,6 @@ public class StudentDTO extends UserDTO {
 
     public StudentDTO getStudentDTO(Student student, User user) {
         StudentDTO studentDTO = new StudentDTO();
-        studentDTO.setCode(user.getCode());
         studentDTO.setNames(user.getNames());
         studentDTO.setSurNames(user.getSurNames());
         studentDTO.setEmail(user.getEmail());

@@ -23,10 +23,10 @@ public class WorkerDeletageImpl implements WorkerDeletage {
     private final WorkerMapper mapper;
 
     @Override
-    public WorkerDTO getWorkerById(Long id) {
-        Worker worker = workerRepository.findById(id).orElse(null);
-        User user = userRepository.findById(id).orElse(null);
-        if (worker != null && user != null) {
+    public WorkerDTO getWorkerByUsername(String username) {
+        Worker worker = workerRepository.findByUserUsername(username);
+        if (worker != null) {
+            User user = userRepository.findById(worker.getUserId()).orElse(null);
             return new WorkerDTO().getWorkerDTO(worker, user);
         }
         return null;
@@ -35,7 +35,7 @@ public class WorkerDeletageImpl implements WorkerDeletage {
     @Override
     public List<WorkerDTO> getAllWorkers() {
         return workerRepository.findAll().stream()
-                .map(worker -> getWorkerById(worker.getUserId()))
+                .map(worker -> getWorkerByUsername(worker.getUser().getUsername()))
                 .toList();
     }
 
@@ -52,12 +52,10 @@ public class WorkerDeletageImpl implements WorkerDeletage {
     }
 
     @Override
-    public WorkerDTO updateWorker(Long id, WorkerDTO worker) {
-        User existingUser = userRepository.findById(id).orElse(null);
-        Worker existingWorker = workerRepository.findById(id).orElse(null);
-
-        if (existingUser != null && existingWorker != null) {
-            existingUser.setCode(worker.getCode());
+    public WorkerDTO updateWorker(String username, WorkerDTO worker) {
+        Worker existingWorker = workerRepository.findByUserUsername(username);
+        if (existingWorker != null) {
+            User existingUser = userRepository.findById(existingWorker.getUserId()).orElse(null);
             existingUser.setNames(worker.getNames());
             existingUser.setSurNames(worker.getSurNames());
             existingUser.setEmail(worker.getEmail());
@@ -73,8 +71,8 @@ public class WorkerDeletageImpl implements WorkerDeletage {
     }
 
     @Override
-    public void deleteWorker(Long id) {
-        workerRepository.deleteById(id);
+    public void deleteWorker(String username) {
+        workerRepository.deleteByUserUsername(username);
     }
 
 }

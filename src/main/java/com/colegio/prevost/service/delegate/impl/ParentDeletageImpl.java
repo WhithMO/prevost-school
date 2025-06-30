@@ -22,11 +22,10 @@ public class ParentDeletageImpl implements ParentDeletage {
     private final UserRepository userRepository;
     private final ParentMapper mapper;
 
-    @Override
-    public ParentDTO getParentById(Long id) {
-        Parent parent = parentRepository.findById(id).orElse(null);
-        User user = userRepository.findById(id).orElse(null);
-        if (parent != null && user != null) {
+    public ParentDTO getParentByUsername(String username) {
+        Parent parent = parentRepository.findByUserUsername(username);
+        if (parent != null) {
+            User user = userRepository.findById(parent.getUserId()).orElse(null);
             return new ParentDTO().getParentDTOFromEntity(parent, user);
         }
         return null;
@@ -35,7 +34,7 @@ public class ParentDeletageImpl implements ParentDeletage {
     @Override
     public List<ParentDTO> getAllParents() {
         return parentRepository.findAll().stream()
-                .map(parent -> getParentById(parent.getUserId()))
+                .map(parent -> getParentByUsername(parent.getUser().getUsername()))
                 .toList();
     }
 
@@ -47,12 +46,10 @@ public class ParentDeletageImpl implements ParentDeletage {
     }
 
     @Override
-    public ParentDTO updateParent(Long id, ParentDTO parent) {
-        User existingUser = userRepository.findById(id).orElse(null);
-        Parent existingParent = parentRepository.findById(id).orElse(null);
-
-        if (existingUser != null && existingParent != null) {
-            existingUser.setCode(parent.getCode());
+    public ParentDTO updateParent(String username, ParentDTO parent) {
+        Parent existingParent = parentRepository.findByUserUsername(username);
+        if (existingParent != null) {
+            User existingUser = userRepository.findById(existingParent.getUserId()).orElse(null);
             existingUser.setNames(parent.getNames());
             existingUser.setSurNames(parent.getSurNames());
             existingUser.setEmail(parent.getEmail());
@@ -67,8 +64,8 @@ public class ParentDeletageImpl implements ParentDeletage {
     }
 
     @Override
-    public void deleteParent(Long id) {
-        parentRepository.deleteById(id);
+    public void deleteParent(String username) {
+        parentRepository.deleteByUserUsername(username);
     }
 
 }

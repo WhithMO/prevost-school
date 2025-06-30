@@ -1,6 +1,7 @@
 package com.colegio.prevost.service.delegate.impl;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
@@ -23,10 +24,10 @@ public class StudentDeletageImpl implements StudentDeletage {
     private final StudentMapper mapper;
 
     @Override
-    public StudentDTO getStudentById(Long id) {
-        Student student = studentRepository.findById(id).orElse(null);
-        User user = userRepository.findById(id).orElse(null);
-        if (student != null && user != null) {
+    public StudentDTO getStudentByUsername(String username) {
+        Student student = studentRepository.findByUserUsername(username);
+        if (student != null) {
+            User user = userRepository.findById(student.getUserId()).orElse(null);
             return new StudentDTO().getStudentDTO(student, user);
         }
         return null;
@@ -35,7 +36,7 @@ public class StudentDeletageImpl implements StudentDeletage {
     @Override
     public List<StudentDTO> getAllStudents() {
         return studentRepository.findAll().stream()
-                .map(student -> getStudentById(student.getUserId()))
+                .map(student -> getStudentByUsername(student.getUser().getUsername()))
                 .toList();
     }
 
@@ -52,18 +53,15 @@ public class StudentDeletageImpl implements StudentDeletage {
     }
 
     @Override
-    public StudentDTO updateStudent(Long id, StudentDTO student) {
-        User existingUser = userRepository.findById(id).orElse(null);
-        Student existingStudent = studentRepository.findById(id).orElse(null);
-
-        if (existingUser != null && existingStudent != null) {
-            existingUser.setCode(student.getCode());
+    public StudentDTO updateStudent(String username, StudentDTO student) {
+        Student existingStudent = studentRepository.findByUserUsername(username);
+        if (existingStudent != null) {
+            User existingUser = userRepository.findById(existingStudent.getUserId()).orElse(null);
             existingUser.setNames(student.getNames());
             existingUser.setSurNames(student.getSurNames());
             existingUser.setEmail(student.getEmail());
             userRepository.save(existingUser);
-        }
-        if (existingStudent != null) {
+
             existingStudent.setGradeEnum(student.getGradeEnum());
             existingStudent.setAdmissionDate(student.getAdmissionDate());
             existingStudent.setEgressDate(student.getEgressDate());
@@ -74,8 +72,8 @@ public class StudentDeletageImpl implements StudentDeletage {
     }
 
     @Override
-    public void deleteStudent(Long id) {
-        studentRepository.deleteById(id);
+    public void deleteStudent(String username) {
+        studentRepository.deleteByUserUsername(username);
     }
 
 }

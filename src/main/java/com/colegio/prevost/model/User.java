@@ -4,7 +4,6 @@ import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
-import com.colegio.prevost.dto.ParentDTO;
 import com.colegio.prevost.dto.UserDTO;
 
 import jakarta.persistence.Column;
@@ -40,9 +39,6 @@ public class User {
     private String password;
 
     @Column(nullable = false)
-    private String code;
-
-    @Column(nullable = false)
     private String names;
 
     @Column(nullable = false)
@@ -71,7 +67,6 @@ public class User {
         User user = new User();
         user.setUsername(dto.getUsername());
         user.setPassword(dto.getPassword());
-        user.setCode(dto.getCode());
         user.setNames(dto.getNames());
         user.setSurNames(dto.getSurNames());
         user.setEmail(dto.getEmail());

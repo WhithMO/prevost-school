@@ -12,7 +12,6 @@ public class UserDTO {
     private Long id;
     private String username;
     private String password;
-    private String code;
     private String names;
     private String surNames;
     private String email;
@@ -28,10 +27,6 @@ public class UserDTO {
 
     public String getPassword() {
         return password != null ? password : null;
-    }
-
-    public String getCode() {
-        return code != null ? code : null;
     }
 
     public String getNames() {

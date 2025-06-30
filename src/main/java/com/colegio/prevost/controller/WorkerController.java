@@ -25,8 +25,8 @@ public class WorkerController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<WorkerDTO> getWorkerById(@PathVariable Long id) {
-        WorkerDTO dto = workerDelegate.getWorkerById(id);
+    public ResponseEntity<WorkerDTO> getWorkerById(@PathVariable String username) {
+        WorkerDTO dto = workerDelegate.getWorkerByUsername(username);
         return dto != null
                 ? ResponseEntity.ok(dto)
                 : ResponseEntity.notFound().build();
@@ -42,18 +42,18 @@ public class WorkerController {
 
     @PutMapping("/{id}")
     public ResponseEntity<WorkerDTO> updateWorker(
-            @PathVariable Long id,
+            @PathVariable String username,
             @RequestBody WorkerDTO worker) {
 
-        WorkerDTO updated = workerDelegate.updateWorker(id, worker);
+        WorkerDTO updated = workerDelegate.updateWorker(username, worker);
         return updated != null
                 ? ResponseEntity.ok(updated)
                 : ResponseEntity.notFound().build();
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteWorker(@PathVariable Long id) {
-        workerDelegate.deleteWorker(id);
+    public ResponseEntity<Void> deleteWorker(@PathVariable String username) {
+        workerDelegate.deleteWorker(username);
         return ResponseEntity.noContent().build();
     }
 }
