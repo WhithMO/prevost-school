@@ -1,5 +1,6 @@
 package com.colegio.prevost.service.delegate.impl;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,6 +10,7 @@ import com.colegio.prevost.dto.GradeRecordDTO;
 import com.colegio.prevost.model.GradeRecord;
 import com.colegio.prevost.repository.GradeRecordRepository;
 import com.colegio.prevost.service.delegate.GradeRecordDeletage;
+import com.colegio.prevost.util.enums.EvaluationEnum;
 import com.colegio.prevost.util.mapper.GradeRecordMapper;
 
 import lombok.RequiredArgsConstructor;
@@ -47,7 +49,8 @@ public class GradeRecordDeletageImpl implements GradeRecordDeletage {
             existing.setStudent(gradeRecord.getStudent());
             existing.setCourse(gradeRecord.getCourse());
             existing.setTeacher(gradeRecord.getTeacher());
-            existing.setEvaluation(gradeRecord.getEvaluation());
+            existing.setEvaluationType(gradeRecord.getEvaluationType());
+            existing.setEvaluationDate(gradeRecord.getEvaluationDate());
             existing.setScore(gradeRecord.getScore());
             return mapper.toDto(repository.save(mapper.toEntity(existing)));
         }
@@ -58,6 +61,26 @@ public class GradeRecordDeletageImpl implements GradeRecordDeletage {
     public void deleteGradeRecord(String id) {
         Long convertedId = getConvertedId(id);
         repository.deleteById(convertedId);
+    }
+
+    @Override
+    public List<GradeRecordDTO> findByStudentUserIdAndCourseId(Long studentUserId, Long courseId) {
+   return repository.findByStudentUserIdAndCourseId(studentUserId, courseId)
+                    .stream()
+                    .map(mapper::toDto)
+                    .toList();
+    }
+
+    @Override
+    public List<GradeRecordDTO> findByStudentUserIdAndCourseIdAndEvaluationTypeAndEvaluationDate(Long studentUserId,
+                                                                                              Long courseId,
+                                                                                              EvaluationEnum evaluation,
+                                                                                              LocalDate evaluationDate) {
+      return repository.findByStudentUserIdAndCourseIdAndEvaluationTypeAndEvaluationDate(
+              studentUserId, courseId, evaluation, evaluationDate)
+              .stream()
+              .map(mapper::toDto)
+              .toList();
     }
 
     private static long getConvertedId(String id) {

@@ -1,5 +1,6 @@
 package com.colegio.prevost.service.delegate.impl;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -47,6 +48,7 @@ public class AnnouncementDeletageImpl implements AnnouncementDeletage {
          entity.setDescription(announcement.getDescription());
          entity.setTeacher(announcement.getTeacher());
          entity.setGrade(announcement.getGrade());
+         entity.setAnnouncementDate(announcement.getAnnouncementDate());
          return mapper.toDto(repository.save(mapper.toEntity(entity)));
      }
      return null;
@@ -56,6 +58,13 @@ public class AnnouncementDeletageImpl implements AnnouncementDeletage {
     public void deleteAnnouncement(String id) {
         Long convertedId = getConvertedId(id);
         repository.deleteById(convertedId);
+    }
+
+    @Override
+    public List<AnnouncementDTO> findByGradeAndAnnouncementDate(Long studentUserId, LocalDate announcementDate) {
+       return repository.findByGradeAndAnnouncementDate(studentUserId, announcementDate).stream()
+               .map(mapper::toDto)
+               .toList();
     }
 
     private long getConvertedId(String id) {

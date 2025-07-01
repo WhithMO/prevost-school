@@ -1,5 +1,6 @@
 package com.colegio.prevost.service.delegate.impl;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -57,6 +58,24 @@ public class AttendanceDeletageImpl implements AttendanceDeletage {
     public void deleteAttendance(String id) {
         Long convertedId = getConvertedId(id);
         repository.deleteById(convertedId);
+    }
+
+    @Override
+    public List<AttendanceDTO> findByStudentUserIdAndCourseId(Long studentUserId, Long courseId) {
+   return repository.findByStudentUserIdAndCourseId(studentUserId, courseId)
+                    .stream()
+                    .map(mapper::toDto)
+                    .toList();
+    }
+
+    @Override
+    public List<AttendanceDTO> findByStudentUserIdAndCourseIdAndAttendanceDate(Long studentUserId,
+                                                                            Long courseId,
+                                                                            LocalDate attendanceDate) {
+        return repository.findByStudentUserIdAndCourseIdAndAttendanceDate(studentUserId, courseId, attendanceDate)
+                         .stream()
+                         .map(mapper::toDto)
+                         .toList();
     }
 
     private Long getConvertedId(String id) {

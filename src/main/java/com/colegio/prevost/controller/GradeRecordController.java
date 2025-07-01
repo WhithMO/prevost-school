@@ -1,13 +1,16 @@
 package com.colegio.prevost.controller;
 
 import java.net.URI;
+import java.time.LocalDate;
 import java.util.List;
 
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import com.colegio.prevost.dto.GradeRecordDTO;
 import com.colegio.prevost.service.delegate.GradeRecordDeletage;
+import com.colegio.prevost.util.enums.EvaluationEnum;
 
 import lombok.RequiredArgsConstructor;
 
@@ -55,5 +58,29 @@ public class GradeRecordController {
     public ResponseEntity<Void> deleteGradeRecord(@PathVariable String id) {
         gradeRecordDelegate.deleteGradeRecord(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/student/{studentUserId}/course/{courseId}")
+    public ResponseEntity<List<GradeRecordDTO>> getByStudentAndCourse(
+            @PathVariable Long studentUserId,
+            @PathVariable Long courseId) {
+
+        List<GradeRecordDTO> list =
+                gradeRecordDelegate.findByStudentUserIdAndCourseId(studentUserId, courseId);
+        return ResponseEntity.ok(list);
+    }
+
+    @GetMapping("/student/{studentUserId}/course/{courseId}"
+            + "/evaluation/{evaluation}/date/{evaluationDate}")
+    public ResponseEntity<List<GradeRecordDTO>> getByAllFilters(
+            @PathVariable Long studentUserId,
+            @PathVariable Long courseId,
+            @PathVariable EvaluationEnum evaluation,
+            @PathVariable @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate evaluationDate) {
+
+        List<GradeRecordDTO> list =
+                gradeRecordDelegate.findByStudentUserIdAndCourseIdAndEvaluationTypeAndEvaluationDate(
+                        studentUserId, courseId, evaluation, evaluationDate);
+        return ResponseEntity.ok(list);
     }
 }

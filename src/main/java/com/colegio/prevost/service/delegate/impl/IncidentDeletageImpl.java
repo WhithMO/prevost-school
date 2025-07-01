@@ -1,5 +1,6 @@
 package com.colegio.prevost.service.delegate.impl;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -56,6 +57,14 @@ public class IncidentDeletageImpl implements IncidentDeletage {
     public void deleteIncident(String id) {
         Long convertedId = getConvertedId(id);
         repository.deleteById(convertedId);
+    }
+
+    @Override
+    public List<IncidentDTO> findByStudentUserIdAndIncidentDate(Long studentUserId, LocalDate incidentDate) {
+        return repository.findByStudentUserIdAndIncidentDate(studentUserId, incidentDate)
+                .stream()
+                .map(mapper::toDto)
+                .toList();
     }
 
     private static long getConvertedId(String id) {

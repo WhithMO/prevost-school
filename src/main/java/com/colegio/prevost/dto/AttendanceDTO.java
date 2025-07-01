@@ -1,5 +1,7 @@
 package com.colegio.prevost.dto;
 
+import java.time.LocalDate;
+
 import lombok.Data;
 
 @Data
@@ -14,4 +16,6 @@ public class AttendanceDTO {
     private WorkerDTO teacher;
 
     private Boolean present;
+
+    private LocalDate attendanceDate;
 }

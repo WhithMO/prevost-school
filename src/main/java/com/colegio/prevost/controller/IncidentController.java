@@ -1,8 +1,10 @@
 package com.colegio.prevost.controller;
 
 import java.net.URI;
+import java.time.LocalDate;
 import java.util.List;
 
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -55,5 +57,15 @@ public class IncidentController {
     public ResponseEntity<Void> deleteIncident(@PathVariable String id) {
         incidentDelegate.deleteIncident(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/student/{studentUserId}/date/{incidentDate}")
+    public ResponseEntity<List<IncidentDTO>> getByStudentAndDate(
+            @PathVariable Long studentUserId,
+            @PathVariable @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate incidentDate) {
+
+        List<IncidentDTO> list =
+                incidentDelegate.findByStudentUserIdAndIncidentDate(studentUserId, incidentDate);
+        return ResponseEntity.ok(list);
     }
 }

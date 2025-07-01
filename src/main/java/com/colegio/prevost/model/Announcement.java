@@ -1,5 +1,6 @@
 package com.colegio.prevost.model;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 import com.colegio.prevost.util.enums.GradeEnum;
@@ -33,6 +34,9 @@ public class Announcement {
     private Worker teacher;
 
     private GradeEnum grade;
+
+    @Column(name = "announcement_date")
+    private LocalDate announcementDate;
 
     @Column(name = "created_at")
     private LocalDateTime createdAt;

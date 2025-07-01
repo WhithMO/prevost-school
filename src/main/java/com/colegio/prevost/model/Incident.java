@@ -1,5 +1,6 @@
 package com.colegio.prevost.model;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 import jakarta.persistence.Column;
@@ -34,6 +35,9 @@ public class Incident {
     private Worker teacher;
 
     private String description;
+
+    @Column(name = "incident_date")
+    private LocalDate incidentDate;
 
     @Column(name = "created_at")
     private LocalDateTime createdAt;

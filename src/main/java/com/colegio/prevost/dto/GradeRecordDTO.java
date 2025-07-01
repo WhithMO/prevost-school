@@ -1,5 +1,7 @@
 package com.colegio.prevost.dto;
 
+import java.time.LocalDate;
+
 import com.colegio.prevost.util.enums.EvaluationEnum;
 
 import lombok.Data;
@@ -15,7 +17,9 @@ public class GradeRecordDTO {
 
     private WorkerDTO teacher;
 
-    private EvaluationEnum evaluation;
+    private EvaluationEnum evaluationType;
+
+    private LocalDate evaluationDate;
 
     private Double score;
 }

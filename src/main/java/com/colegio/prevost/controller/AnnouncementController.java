@@ -1,8 +1,10 @@
 package com.colegio.prevost.controller;
 
 import java.net.URI;
+import java.time.LocalDate;
 import java.util.List;
 
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -62,5 +64,14 @@ public class AnnouncementController {
     public ResponseEntity<Void> deleteAnnouncement(@PathVariable String id) {
         announcementDelegate.deleteAnnouncement(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/grade/{studentUserId}/date/{announcementDate}")
+    public ResponseEntity<List<AnnouncementDTO>> getByGradeAndDate(
+            @PathVariable Long studentUserId,
+            @PathVariable @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate announcementDate) {
+        List<AnnouncementDTO> list =
+                announcementDelegate.findByGradeAndAnnouncementDate(studentUserId, announcementDate);
+        return ResponseEntity.ok(list);
     }
 }

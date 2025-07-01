@@ -1,5 +1,7 @@
 package com.colegio.prevost.dto;
 
+import java.time.LocalDate;
+
 import com.colegio.prevost.util.enums.GradeEnum;
 
 import lombok.Data;
@@ -14,4 +16,6 @@ public class AnnouncementDTO {
     private WorkerDTO teacher;
 
     private GradeEnum grade;
+
+    private LocalDate announcementDate;
 }

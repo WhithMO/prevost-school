@@ -1,5 +1,6 @@
 package com.colegio.prevost.model;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 import com.colegio.prevost.util.enums.EvaluationEnum;
@@ -41,8 +42,11 @@ public class GradeRecord {
     private Worker teacher;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "evaluation")
-    private EvaluationEnum evaluation;
+    @Column(name = "evaluationType")
+    private EvaluationEnum evaluationType;
+
+    @Column(name = "evaluation_date")
+    private LocalDate evaluationDate;
 
     private Double score;
 
@@ -51,6 +55,7 @@ public class GradeRecord {
 
     @PrePersist
     protected void onCreate() {
+        this.evaluationDate = LocalDate.now();
         this.createdAt = LocalDateTime.now();
     }
 

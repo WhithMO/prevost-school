@@ -1,5 +1,6 @@
 package com.colegio.prevost.service.delegate;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import com.colegio.prevost.dto.AttendanceDTO;
@@ -12,4 +13,8 @@ public interface AttendanceDeletage {
     AttendanceDTO createAttendance(AttendanceDTO attendance);
     AttendanceDTO updateAttendance(String id, AttendanceDTO attendance);
     void deleteAttendance(String id);
+
+    List<AttendanceDTO> findByStudentUserIdAndCourseId(Long studentUserId, Long courseId);
+    List<AttendanceDTO> findByStudentUserIdAndCourseIdAndAttendanceDate(
+            Long studentUserId, Long courseId, LocalDate attendanceDate);
 }
