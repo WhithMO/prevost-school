@@ -24,7 +24,7 @@ public class UserController {
         return ResponseEntity.ok(users);
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/{username}")
     public ResponseEntity<UserDTO> getUserById(@PathVariable String username) {
         UserDTO dto = userDelegate.getUserById(username);
         return dto != null
@@ -40,7 +40,7 @@ public class UserController {
                 .body(created);
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("/{username}")
     public ResponseEntity<UserDTO> updateUser(
             @PathVariable String username,
             @RequestBody UserDTO user) {
@@ -51,7 +51,7 @@ public class UserController {
                 : ResponseEntity.notFound().build();
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/{username}")
     public ResponseEntity<Void> deleteUser(@PathVariable String username) {
         userDelegate.deleteUser(username);
         return ResponseEntity.noContent().build();
