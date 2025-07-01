@@ -42,12 +42,20 @@ public class UserDeletageImpl implements UserDeletage {
            existingUser.setNames(user.getNames());
            existingUser.setSurNames(user.getSurNames());
            existingUser.setEmail(user.getEmail());
-           existingUser.setPassword(user.getPassword());
            existingUser.setRoles(user.getRoles());
            userRepository.save(existingUser);
            return user;
         }
         return null;
+    }
+
+    @Override
+    public void updatePassword(String username, String newPassword) {
+        User existingUser = userRepository.findByUsername(username);
+        if (existingUser != null) {
+            existingUser.setPassword(newPassword);
+            userRepository.save(existingUser);
+        }
     }
 
     @Override

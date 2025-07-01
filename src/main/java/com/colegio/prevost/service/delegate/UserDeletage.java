@@ -9,5 +9,6 @@ public interface UserDeletage {
     List<UserDTO> getAllUsers();
     UserDTO createUser(UserDTO user);
     UserDTO updateUser(String username, UserDTO user);
+    void updatePassword(String username, String newPassword);
     void deleteUser(String username);
 }
