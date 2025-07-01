@@ -2,6 +2,7 @@ package com.colegio.prevost.controller;
 
 import java.net.URI;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -54,6 +55,20 @@ public class UserController {
     @DeleteMapping("/{username}")
     public ResponseEntity<Void> deleteUser(@PathVariable String username) {
         userDelegate.deleteUser(username);
+        return ResponseEntity.noContent().build();
+    }
+
+    @PutMapping("/{username}/password")
+    public ResponseEntity<Void> updatePassword(
+            @PathVariable String username,
+            @RequestBody Map<String, String> payload) {
+
+        String newPassword = payload.get("newPassword");
+        if (newPassword == null || newPassword.isBlank()) {
+            return ResponseEntity.badRequest().build();
+        }
+
+        userDelegate.updatePassword(username, newPassword);
         return ResponseEntity.noContent().build();
     }
 }
