@@ -40,7 +40,7 @@ public class ParentController {
                 .body(created);
     }
 
-    @PutMapping("/{username")
+    @PutMapping("/{username}")
     public ResponseEntity<ParentDTO> updateParent(
             @PathVariable String username,
             @RequestBody ParentDTO parent) {

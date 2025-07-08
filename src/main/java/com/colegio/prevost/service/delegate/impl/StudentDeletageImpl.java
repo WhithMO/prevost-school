@@ -1,8 +1,9 @@
 package com.colegio.prevost.service.delegate.impl;
 
 import java.util.List;
-import java.util.Optional;
 
+import org.hibernate.service.spi.ServiceException;
+import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 
 import com.colegio.prevost.dto.StudentDTO;
@@ -14,7 +15,9 @@ import com.colegio.prevost.service.delegate.StudentDeletage;
 import com.colegio.prevost.util.mapper.StudentMapper;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class StudentDeletageImpl implements StudentDeletage {
@@ -25,41 +28,61 @@ public class StudentDeletageImpl implements StudentDeletage {
 
     @Override
     public StudentDTO getStudentByUsername(String username) {
-        Student student = studentRepository.findByUserUsername(username);
-        if (student != null) {
-            User user = userRepository.findById(student.getUserId()).orElse(null);
+        try {
+            Student student = studentRepository.findByUserUsername(username);
+            if (student == null) {
+                throw new ServiceException("Recurso no encontrado: Student username=" + username);
+            }
+            User user = userRepository.findById(student.getUserId())
+                    .orElseThrow(() -> new ServiceException("Recurso no encontrado: User id=" + student.getUserId()));
             return new StudentDTO().getStudentDTO(student, user);
+        } catch (DataAccessException dae) {
+            log.error("Error de acceso a datos al obtener Student username={}", username, dae);
+            throw new ServiceException("Error interno al procesar la solicitud");
         }
-        return null;
     }
 
     @Override
     public List<StudentDTO> getAllStudents() {
-        return studentRepository.findAll().stream()
-                .map(student -> getStudentByUsername(student.getUser().getUsername()))
-                .toList();
+        try {
+            return studentRepository.findAll().stream()
+                    .map(student -> getStudentByUsername(student.getUser().getUsername()))
+                    .toList();
+        } catch (DataAccessException dae) {
+            log.error("Error de acceso a datos al listar Students", dae);
+            throw new ServiceException("Error interno al procesar la solicitud");
+        }
     }
 
     @Override
     public StudentDTO createStudent(StudentDTO student) {
-        String contructedId = String.format("%s-%s", student.getSurNames()
-                .toUpperCase().charAt(0), student.getDocumentNumber());
-        student.setUsername(contructedId);
-        User user = userRepository.save(new User().getUserFromDto(student));
-        Student studentEntity = studentRepository.save(new Student(
-                user,
-                student.getGradeEnum(),
-                student.getAdmissionDate(),
-                student.getEgressDate()
-        ));
-        return mapper.toDto(studentEntity);
+        try {
+            String contructedId = String.format("%s-%s", student.getSurNames()
+                    .toUpperCase().charAt(0), student.getDocumentNumber());
+            student.setUsername(contructedId);
+            User user = userRepository.save(new User().getUserFromDto(student));
+            Student studentEntity = studentRepository.save(new Student(
+                    user,
+                    student.getGradeEnum(),
+                    student.getAdmissionDate(),
+                    student.getEgressDate()
+            ));
+            return mapper.toDto(studentEntity);
+        } catch (DataAccessException dae) {
+            log.error("Error de acceso a datos al crear Student", dae);
+            throw new ServiceException("Error interno al procesar la solicitud");
+        }
     }
 
     @Override
     public StudentDTO updateStudent(String username, StudentDTO student) {
-        Student existingStudent = studentRepository.findByUserUsername(username);
-        if (existingStudent != null) {
-            User existingUser = userRepository.findById(existingStudent.getUserId()).orElse(null);
+        try {
+            Student existingStudent = studentRepository.findByUserUsername(username);
+            if (existingStudent == null) {
+                throw new ServiceException("Recurso no encontrado: Student username=" + username);
+            }
+            User existingUser = userRepository.findById(existingStudent.getUserId())
+                    .orElseThrow(() -> new ServiceException("Recurso no encontrado: User id=" + existingStudent.getUserId()));
             existingUser.setNames(student.getNames());
             existingUser.setSurNames(student.getSurNames());
             existingUser.setEmail(student.getEmail());
@@ -70,13 +93,23 @@ public class StudentDeletageImpl implements StudentDeletage {
             existingStudent.setEgressDate(student.getEgressDate());
             studentRepository.save(existingStudent);
             return student;
+        } catch (DataAccessException dae) {
+            log.error("Error de acceso a datos al actualizar Student username={}", username, dae);
+            throw new ServiceException("Error interno al procesar la solicitud");
         }
-        return null;
     }
 
     @Override
     public void deleteStudent(String username) {
-        studentRepository.deleteByUserUsername(username);
+        try {
+            if (studentRepository.findByUserUsername(username) == null) {
+                throw new ServiceException("Recurso no encontrado: Student username=" + username);
+            }
+            studentRepository.deleteByUserUsername(username);
+        } catch (DataAccessException dae) {
+            log.error("Error de acceso a datos al eliminar Student username={}", username, dae);
+            throw new ServiceException("Error interno al procesar la solicitud");
+        }
     }
 
 }

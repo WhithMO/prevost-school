@@ -2,6 +2,8 @@ package com.colegio.prevost.service.delegate.impl;
 
 import java.util.List;
 
+import org.hibernate.service.spi.ServiceException;
+import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 
 import com.colegio.prevost.dto.ParentStudentDTO;
@@ -13,7 +15,9 @@ import com.colegio.prevost.util.mapper.ParentStudentMapper;
 import com.colegio.prevost.util.mapper.StudentMapper;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class ParentStudentDeletageImpl implements ParentStudentDeletage {
@@ -26,38 +30,69 @@ public class ParentStudentDeletageImpl implements ParentStudentDeletage {
     @Override
     public ParentStudentDTO getParentStudentById(String id) {
         Long convertedId = getConvertedId(id);
-        return parentStudentMapper.toDto(repository.findById(convertedId).orElse(null));
+        try {
+            ParentStudent entity = repository.findById(convertedId)
+                    .orElseThrow(() -> new ServiceException("Recurso no encontrado: ParentStudent id=" + id));
+            return parentStudentMapper.toDto(entity);
+        } catch (DataAccessException dae) {
+            log.error("Error de acceso a datos al obtener ParentStudent id={}", id, dae);
+            throw new ServiceException("Error interno al procesar la solicitud");
+        }
     }
 
     @Override
     public List<ParentStudentDTO> getAllParentStudents() {
-        return repository.findAll().stream()
-                .map(parentStudentMapper::toDto)
-                .toList();
+        try {
+            return repository.findAll().stream()
+                    .map(parentStudentMapper::toDto)
+                    .toList();
+        } catch (DataAccessException dae) {
+            log.error("Error de acceso a datos al listar ParentStudents", dae);
+            throw new ServiceException("Error interno al procesar la solicitud");
+        }
     }
 
     @Override
     public ParentStudentDTO createParentStudent(ParentStudentDTO parentStudent) {
-        return parentStudentMapper.toDto(repository.save(parentStudentMapper.toEntity(parentStudent)));
+        try {
+            return parentStudentMapper.toDto(repository.save(parentStudentMapper.toEntity(parentStudent)));
+        } catch (DataAccessException dae) {
+            log.error("Error de acceso a datos al crear ParentStudent", dae);
+            throw new ServiceException("Error interno al procesar la solicitud");
+        }
     }
 
     @Override
     public ParentStudentDTO updateParentStudent(String id, ParentStudentDTO parentStudent) {
-        Long convertedId = getConvertedId(id);
-       ParentStudent existingParentStudent = repository.findById(convertedId).orElse(null);
-       if (existingParentStudent != null) {
-           existingParentStudent.setParent(parentMapper.toEntity(parentStudent.getParent()));
-           existingParentStudent.setStudent(studentMapper.toEntity(parentStudent.getStudent()));
-           existingParentStudent.setRelationship(parentStudent.getRelationship());
-           return parentStudentMapper.toDto(repository.save(existingParentStudent));
-       }
-       return null;
+        try {
+            Long convertedId = getConvertedId(id);
+            ParentStudent existingParentStudent = repository.findById(convertedId).orElse(null);
+            if (existingParentStudent == null) {
+                throw new ServiceException("Recurso no encontrado: ParentStudent id=" + id);
+            }
+            existingParentStudent.setParent(parentMapper.toEntity(parentStudent.getParent()));
+            existingParentStudent.setStudent(studentMapper.toEntity(parentStudent.getStudent()));
+            existingParentStudent.setRelationship(parentStudent.getRelationship());
+            return parentStudentMapper.toDto(repository.save(existingParentStudent));
+        } catch (DataAccessException dae) {
+            log.error("Error de acceso a datos al actualizar ParentStudent id={}", id, dae);
+            throw new ServiceException("Error interno al procesar la solicitud");
+        }
+
     }
 
     @Override
     public void deleteParentStudent(String id) {
         Long convertedId = getConvertedId(id);
-        repository.deleteById(convertedId);
+        try {
+            if (!repository.existsById(convertedId)) {
+                throw new ServiceException("Recurso no encontrado: ParentStudent id=" + id);
+            }
+            repository.deleteById(convertedId);
+        } catch (DataAccessException dae) {
+            log.error("Error de acceso a datos al eliminar ParentStudent id={}", id, dae);
+            throw new ServiceException("Error interno al procesar la solicitud");
+        }
     }
 
     private long getConvertedId(String id) {

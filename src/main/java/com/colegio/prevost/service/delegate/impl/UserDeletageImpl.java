@@ -2,6 +2,8 @@ package com.colegio.prevost.service.delegate.impl;
 
 import java.util.List;
 
+import org.hibernate.service.spi.ServiceException;
+import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 
 import com.colegio.prevost.dto.UserDTO;
@@ -11,7 +13,9 @@ import com.colegio.prevost.service.delegate.UserDeletage;
 import com.colegio.prevost.util.mapper.UserMapper;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class UserDeletageImpl implements UserDeletage {
@@ -21,46 +25,85 @@ public class UserDeletageImpl implements UserDeletage {
 
     @Override
     public UserDTO getUserById(String username) {
-        return mapper.toDto(userRepository.findByUsername(username));
+        try {
+            User user = userRepository.findByUsername(username);
+            if (user == null) {
+                throw new ServiceException("Recurso no encontrado: User username=" + username);
+            }
+            return mapper.toDto(user);
+        } catch (DataAccessException dae) {
+            log.error("Error de acceso a datos al obtener User username={}", username, dae);
+            throw new ServiceException("Error interno al procesar la solicitud");
+        }
     }
 
     @Override
     public List<UserDTO> getAllUsers() {
-        return userRepository.findAll().stream()
-                .map(mapper::toDto).toList();
+        try {
+            return userRepository.findAll().stream()
+                    .map(mapper::toDto).toList();
+        } catch (DataAccessException dae) {
+            log.error("Error de acceso a datos al listar Users", dae);
+            throw new ServiceException("Error interno al procesar la solicitud");
+        }
     }
 
     @Override
     public UserDTO createUser(UserDTO user) {
-        return mapper.toDto(userRepository.save(mapper.toEntity(user)));
+        try {
+            return mapper.toDto(userRepository.save(mapper.toEntity(user)));
+        } catch (DataAccessException dae) {
+            log.error("Error de acceso a datos al crear User", dae);
+            throw new ServiceException("Error interno al procesar la solicitud");
+        }
     }
 
     @Override
     public UserDTO updateUser(String username, UserDTO user) {
-        User existingUser = userRepository.findByUsername(username);
-        if (existingUser != null) {
-           existingUser.setNames(user.getNames());
-           existingUser.setSurNames(user.getSurNames());
-           existingUser.setEmail(user.getEmail());
-           existingUser.setRoles(user.getRoles());
-           userRepository.save(existingUser);
-           return user;
+        try {
+            User existingUser = userRepository.findByUsername(username);
+            if (existingUser == null) {
+                throw new ServiceException("Recurso no encontrado: User username=" + username);
+            }
+            existingUser.setNames(user.getNames());
+            existingUser.setSurNames(user.getSurNames());
+            existingUser.setEmail(user.getEmail());
+            existingUser.setRoles(user.getRoles());
+            userRepository.save(existingUser);
+            return user;
+        } catch (DataAccessException dae) {
+            log.error("Error de acceso a datos al actualizar User username={}", username, dae);
+            throw new ServiceException("Error interno al procesar la solicitud");
         }
-        return null;
     }
 
     @Override
     public void updatePassword(String username, String newPassword) {
-        User existingUser = userRepository.findByUsername(username);
-        if (existingUser != null) {
+        try {
+            User existingUser = userRepository.findByUsername(username);
+            if (existingUser == null) {
+                throw new ServiceException("Recurso no encontrado: User username=" + username);
+            }
             existingUser.setPassword(newPassword);
             userRepository.save(existingUser);
+        } catch (DataAccessException dae) {
+            log.error("Error de acceso a datos al actualizar contraseña para User username={}", username, dae);
+            throw new ServiceException("Error interno al procesar la solicitud");
         }
+
     }
 
     @Override
     public void deleteUser(String username) {
-        userRepository.deleteByUsername(username);
+        try {
+            if (userRepository.findByUsername(username) == null) {
+                throw new ServiceException("Recurso no encontrado: User username=" + username);
+            }
+            userRepository.deleteByUsername(username);
+        } catch (DataAccessException dae) {
+            log.error("Error de acceso a datos al eliminar User username={}", username, dae);
+            throw new ServiceException("Error interno al procesar la solicitud");
+        }
     }
 
 }
