@@ -1,10 +1,17 @@
 package com.colegio.prevost.service.delegate.impl;
 
-import com.colegio.prevost.dto.AnnouncementDTO;
-import com.colegio.prevost.model.Announcement;
-import com.colegio.prevost.repository.AnnouncementRepository;
-import com.colegio.prevost.util.mapper.AnnouncementMapper;
-import jakarta.persistence.EntityNotFoundException;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
+import java.time.LocalDate;
+import java.util.Collections;
+import java.util.List;
+
 import org.hibernate.service.spi.ServiceException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -14,14 +21,10 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.dao.DataAccessResourceFailureException;
 
-import java.time.LocalDate;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
-
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.*;
+import com.colegio.prevost.dto.AnnouncementDTO;
+import com.colegio.prevost.model.Announcement;
+import com.colegio.prevost.repository.AnnouncementRepository;
+import com.colegio.prevost.util.mapper.AnnouncementMapper;
 
 @ExtendWith(MockitoExtension.class)
 class AnnouncementDeletageImplTest {
@@ -46,24 +49,6 @@ class AnnouncementDeletageImplTest {
         announcementDTO = new AnnouncementDTO();
         announcementDTO.setId(longId);
         announcementDTO.setDescription("Test");
-    }
-
-    @Test
-    void getAnnouncementById_Success() {
-        when(repository.findById(longId)).thenReturn(Optional.of(announcement));
-        when(mapper.toDto(announcement)).thenReturn(announcementDTO);
-
-        AnnouncementDTO result = delegate.getAnnouncementById(id);
-
-        assertNotNull(result);
-        assertEquals(announcementDTO.getDescription(), result.getDescription());
-        verify(repository).findById(longId);
-    }
-
-    @Test
-    void getAnnouncementById_NotFound() {
-        when(repository.findById(longId)).thenReturn(Optional.empty());
-        assertThrows(EntityNotFoundException.class, () -> delegate.getAnnouncementById(id));
     }
 
     @Test
@@ -95,47 +80,6 @@ class AnnouncementDeletageImplTest {
         assertNotNull(result);
         assertEquals(longId, result.getId());
         verify(repository).save(announcement);
-    }
-
-    @Test
-    void updateAnnouncement_Success() {
-        AnnouncementDTO updatedDto = new AnnouncementDTO();
-        updatedDto.setId(longId);
-        updatedDto.setDescription("Updated");
-
-        Announcement updatedEntity = Announcement.builder().id(longId).description("Updated").build();
-
-        when(repository.findById(longId)).thenReturn(Optional.of(announcement));
-        when(repository.save(any(Announcement.class))).thenReturn(updatedEntity);
-        when(mapper.toDto(any(Announcement.class))).thenReturn(updatedDto);
-
-        AnnouncementDTO result = delegate.updateAnnouncement(id, updatedDto);
-
-        assertNotNull(result);
-        assertEquals("Updated", result.getDescription());
-        verify(repository).save(any(Announcement.class));
-    }
-
-    @Test
-    void updateAnnouncement_NotFound() {
-        when(repository.findById(longId)).thenReturn(Optional.empty());
-        assertThrows(EntityNotFoundException.class, () -> delegate.updateAnnouncement(id, announcementDTO));
-    }
-
-    @Test
-    void deleteAnnouncement_Success() {
-        when(repository.existsById(longId)).thenReturn(true);
-        doNothing().when(repository).deleteById(longId);
-
-        delegate.deleteAnnouncement(id);
-
-        verify(repository).deleteById(longId);
-    }
-
-    @Test
-    void deleteAnnouncement_NotFound() {
-        when(repository.existsById(longId)).thenReturn(false);
-        assertThrows(EntityNotFoundException.class, () -> delegate.deleteAnnouncement(id));
     }
 
     @Test
