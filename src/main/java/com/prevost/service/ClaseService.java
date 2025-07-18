@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 
 
 import com.prevost.model.Clase;
-//import com.prevost.model.Grupo;
 import com.prevost.repository.AsistenciaRepository;
 import com.prevost.repository.ClaseRepository;
 
@@ -62,12 +61,4 @@ public class ClaseService {
     public void eliminarClase(Long id) {
         claseRepository.deleteById(id);
     }
-    
-    /*public List<Grupo> obtenerGruposPorClase(Long idClase) {
-        return alumnoClaseRepository.findByClase_IdClase(idClase)
-            .stream()
-            .map(AlumnoClase::getGrupo)
-            .distinct()
-            .collect(Collectors.toList());
-    }*/
 }
