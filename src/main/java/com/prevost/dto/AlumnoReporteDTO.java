@@ -3,7 +3,10 @@ package com.prevost.dto;
 import java.sql.Date;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
+@NoArgsConstructor
+@Data
 public class AlumnoReporteDTO {
 
     private Long idAlumno;
@@ -25,34 +28,5 @@ public class AlumnoReporteDTO {
         this.estadoAsistencia = estadoAsistencia;
         this.curso = curso;
         this.aula = aula;
-    }
-
-    // Opcional: Getters si los necesitás
-    public Long getIdAlumno() {
-        return idAlumno;
-    }
-
-    public String getNombreAlumno() {
-        return nombreAlumno;
-    }
-
-    public String getApellidoAlumno() {
-        return apellidoAlumno;
-    }
-
-    public Date getFechaAsistencia() {
-        return fechaAsistencia;
-    }
-
-    public String getEstadoAsistencia() {
-        return estadoAsistencia;
-    }
-
-    public String getCurso() {
-        return curso;
-    }
-
-    public String getAula() {
-        return aula;
     }
 }
